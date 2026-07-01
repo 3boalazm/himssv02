@@ -1,9 +1,12 @@
+"use client"
+
+import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Link from "next/link"
 import {
   Globe, GraduationCap, Building2, ShieldCheck, Sparkles,
-  ArrowLeft, LayoutDashboard,
+  ArrowLeft, LayoutDashboard, ChevronDown, ChevronLeft,
 } from "lucide-react"
 
 interface RouteItem {
@@ -83,11 +86,14 @@ const groups: RouteGroup[] = [
   },
 ]
 
-export default function SitemapPage() {
+export default function AllPagesNav() {
+  // Only one panel open at a time — the rest stay collapsed
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
-        <div className="max-w-5xl mx-auto px-4 lg:px-6 h-14 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-4 lg:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <LayoutDashboard className="w-4 h-4 text-primary" />
             <span className="font-bold text-foreground">خريطة الموقع — كل الشاشات</span>
@@ -96,49 +102,71 @@ export default function SitemapPage() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 lg:px-6 py-10">
-        <p className="text-sm text-muted-foreground mb-8">
-          صفحة تنقّل سريع لمراجعة كل شاشات المشروع — مبوّبة حسب الدور. لا تظهر
-          هذه الصفحة في التنقّل العادي؛ استخدمها للمراجعة فقط.
+      <main className="max-w-3xl mx-auto px-4 lg:px-6 py-10">
+        <p className="text-sm text-muted-foreground mb-6">
+          دوس على أي رول عشان تشوف شاشاته — نظرة سريعة للمراجعة، مش جزء من
+          تنقّل المنتج النهائي.
         </p>
 
-        <div className="space-y-6">
-          {groups.map((g) => (
-            <Card key={g.title} className="p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: `${g.color}1A` }}
+        <div className="space-y-3">
+          {groups.map((g, i) => {
+            const isOpen = openIndex === i
+            return (
+              <Card key={g.title} className="overflow-hidden p-0">
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between gap-3 p-4 text-right hover:bg-secondary/40 transition-colors"
                 >
-                  <g.icon className="w-4 h-4" style={{ color: g.color }} />
-                </div>
-                <h2 className="text-sm font-semibold text-foreground">{g.title}</h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                {g.routes.map((r) => (
-                  <Link
-                    key={r.href}
-                    href={r.href}
-                    className="flex items-center justify-between gap-2 p-3 rounded-lg border border-border hover:bg-secondary/40 hover:border-primary/30 transition-colors group"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm text-foreground truncate">{r.label}</p>
-                      <p className="text-[11px] text-muted-foreground font-mono truncate" dir="ltr">
-                        {r.href}
-                      </p>
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: `${g.color}1A` }}
+                    >
+                      <g.icon className="w-4 h-4" style={{ color: g.color }} />
                     </div>
-                    <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-                  </Link>
-                ))}
-              </div>
-              {g.routes.some((r) => r.note) && (
-                <p className="text-[11px] text-muted-foreground mt-3">
-                  * الصفحات المعلّمة "واجهة فقط" بصرية بدون مصادقة حقيقية — الباك اند منفصل.
-                </p>
-              )}
-            </Card>
-          ))}
+                    <span className="text-sm font-semibold text-foreground">{g.title}</span>
+                  </div>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <span className="text-[11px] text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
+                      {g.routes.length} صفحات
+                    </span>
+                    {isOpen ? (
+                      <ChevronDown className="w-4 h-4 text-primary" />
+                    ) : (
+                      <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+                    )}
+                  </div>
+                </button>
+
+                {isOpen && (
+                  <div className="border-t border-border p-3 space-y-2 animate-in-up">
+                    {g.routes.map((r) => (
+                      <Link
+                        key={r.href}
+                        href={r.href}
+                        className="flex items-center justify-between gap-2 p-3 rounded-lg border border-border hover:bg-secondary/40 hover:border-primary/30 transition-colors group"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-sm text-foreground truncate">
+                            {r.label}
+                            {r.note && (
+                              <span className="text-[10px] text-muted-foreground mr-1.5">
+                                ({r.note})
+                              </span>
+                            )}
+                          </p>
+                          <p className="text-[11px] text-muted-foreground font-mono truncate" dir="ltr">
+                            {r.href}
+                          </p>
+                        </div>
+                        <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            )
+          })}
         </div>
       </main>
     </div>
