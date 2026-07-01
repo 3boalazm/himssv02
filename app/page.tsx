@@ -58,10 +58,10 @@ export default function LandingPage() {
       <section className="max-w-6xl mx-auto px-4 lg:px-6 py-16 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-[1.1] tracking-tight mb-6">
               أين أنت بالضبط في جاهزية تقنية المعلومات الصحية؟
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+            <p className="text-xl text-foreground/70 leading-relaxed mb-8">
               ليس تقديراً عاماً، بل قياس دقيق موضوعي لجاهزيتك عبر مجالات نظم المعلومات
               الصحية والتشغيل البيني والأمن — اعرفه بدقة قابلة للقياس.
             </p>
@@ -77,6 +77,9 @@ export default function LandingPage() {
                 </Button>
               </Link>
             </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              ٤٠ سؤالاً · ~٥٠ دقيقة · النتيجة فورية عند الانتهاء
+            </p>
           </div>
 
           {/* Matrix visual — same CapabilityRadar (4th reuse) */}
@@ -90,7 +93,7 @@ export default function LandingPage() {
       </section>
 
       {/* 3 pillars */}
-      <section className="max-w-6xl mx-auto px-4 lg:px-6 py-12">
+      <section className="max-w-6xl mx-auto px-4 lg:px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {pillars.map((p) => (
             <Card key={p.title} className="p-6">
@@ -105,14 +108,14 @@ export default function LandingPage() {
       </section>
 
       {/* Methodology teaser */}
-      <section id="methodology" className="max-w-6xl mx-auto px-4 lg:px-6 py-12">
+      <section id="methodology" className="max-w-6xl mx-auto px-4 lg:px-6 py-20">
         <Card className="p-8 bg-secondary/40">
           <div className="max-w-3xl">
             <p className="text-xs text-primary font-medium mb-2">المنهجية</p>
             <h2 className="text-2xl font-bold text-foreground mb-3">
               التقييم ليس محتوى تعليمياً — بل قياس دقيق
             </h2>
-            <p className="text-base text-muted-foreground leading-relaxed">
+            <p className="text-base text-foreground/70 leading-relaxed">
               كل سؤال في هذا التقييم مبني من واقع العمل الميداني في تنفيذ أنظمة المعلومات
               الصحية في المنطقة. النتيجة فورية، والتقييم الكامل مجاني — تعرف موقعك الحقيقي
               قبل أن تبدأ رحلة التعلم.
@@ -122,13 +125,13 @@ export default function LandingPage() {
       </section>
 
       {/* Author credibility */}
-      <section className="max-w-6xl mx-auto px-4 lg:px-6 py-12">
+      <section className="max-w-6xl mx-auto px-4 lg:px-6 py-20">
         <Card className="p-8">
           <p className="text-xs text-primary font-medium mb-2">المؤلف والمنهج</p>
-          <h2 className="text-xl font-bold text-foreground mb-3">
+          <h2 className="text-2xl font-bold text-foreground mb-3">
             بُني هذا التقييم من واقع خبرة تتجاوز عقداً في تنفيذ الأنظمة الصحية
           </h2>
-          <p className="text-base text-muted-foreground leading-relaxed">
+          <p className="text-base text-foreground/70 leading-relaxed">
             خبرة ميدانية في مشاريع التشغيل البيني والامتثال ونظم المعلومات الصحية عبر
             منشآت الرعاية الصحية في المملكة والخليج.
           </p>
@@ -137,7 +140,7 @@ export default function LandingPage() {
 
       {/* Final CTA */}
       <section className="max-w-6xl mx-auto px-4 lg:px-6 py-16 text-center">
-        <h2 className="text-3xl font-bold text-foreground mb-4">
+        <h2 className="text-4xl font-bold text-foreground mb-4">
           جاهز لمعرفة موقعك الحقيقي؟
         </h2>
         <Link href="/dashboard">

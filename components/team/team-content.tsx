@@ -18,14 +18,14 @@ const teamMembers = [
 // Sequential teal→amber scale — never green/red (F.3)
 function scoreColor(score: number) {
   if (score === 0) return "text-muted-foreground"
-  if (score >= 70) return "text-primary"          // deep teal — mastery
-  if (score >= 50) return "text-[#C99A3A]"        // mid amber
-  return "text-[#B45309]"                          // deep amber — gap (NOT red)
+  if (score >= 70) return "text-[#22C55E]"
+  if (score >= 50) return "text-[#14B8A6]"
+  return "text-[#3B82F6]"
 }
 
 const statusMap: Record<string, { label: string; cls: string }> = {
   completed:   { label: "أكمل التقييم", cls: "bg-primary/10 text-primary" },
-  in_progress: { label: "جارٍ",          cls: "bg-[#B45309]/10 text-[#B45309]" },
+  in_progress: { label: "جارٍ",          cls: "bg-[#3B82F6]/10 text-[#3B82F6]" },
   new:         { label: "جديد",          cls: "bg-muted text-muted-foreground" },
 }
 

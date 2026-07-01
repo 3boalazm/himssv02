@@ -154,7 +154,7 @@ export default function LearnerDashboardPage() {
               <div
                 key={i}
                 className="activity-item flex items-center gap-3"
-                style={{ "--accent-color": a.done ? "#22C55E" : "#F59E0B" } as React.CSSProperties}
+                style={{ "--accent-color": a.done ? "#22C55E" : "#3B82F6" } as React.CSSProperties}
               >
                 <a.icon
                   className={`w-4 h-4 flex-shrink-0 ${a.done ? "text-primary" : "text-muted-foreground"}`}

@@ -13,6 +13,7 @@ export default function TeamPage() {
         <Header
           title="أعضاء الفريق"
           description="إدارة أعضاء المؤسسة ومتابعة جاهزيتهم."
+          showOrgAlert={false}
           actions={
             <Button className="w-full sm:w-auto h-9 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
               <UserPlus className="w-4 h-4 ml-1.5" />

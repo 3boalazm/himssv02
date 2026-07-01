@@ -5,12 +5,13 @@ import { Sidebar } from "@/components/dashboard/sidebar"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, MoreHorizontal, LayoutDashboard, Users, FileText } from "lucide-react"
+import { Search, MoreHorizontal, LayoutDashboard, Users, FileText, Settings } from "lucide-react"
 
 const adminMenu = [
   { icon: LayoutDashboard, label: "لوحة تحكم النظام", href: "/admin" },
   { icon: Users, label: "إدارة المستخدمين", href: "/admin/users" },
   { icon: FileText, label: "إدارة المحتوى", href: "/admin/content" },
+  { icon: Settings, label: "إعدادات المنصة", href: "/admin/settings" },
 ]
 
 const users = [

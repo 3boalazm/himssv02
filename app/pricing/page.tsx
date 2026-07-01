@@ -114,6 +114,62 @@ export default function PricingPage() {
           </Card>
         </div>
 
+        {/* Detailed feature comparison table */}
+        <div className="max-w-3xl mx-auto mt-8">
+          <Card className="p-0 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-secondary/30">
+                    <th className="text-right font-semibold text-foreground p-4">الميزة</th>
+                    <th className="text-center font-semibold text-foreground p-4 w-28">مجاني</th>
+                    <th className="text-center font-semibold text-primary p-4 w-28">احترافية</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { label: "عدد الأسئلة في التقييم", free: "40 سؤالاً", pro: "40 سؤالاً" },
+                    { label: "مصفوفة الجاهزية الكاملة", free: true, pro: true },
+                    { label: "الفجوات الظاهرة بالاسم", free: "أعلى 3", pro: "غير محدود" },
+                    { label: "الخطة المخصصة لكل فجوة", free: false, pro: true },
+                    { label: "الوصول لكل الدروس", free: false, pro: true },
+                    { label: "التقارير (PDF عربي/إنجليزي)", free: false, pro: true },
+                    { label: "أرشيف التقارير", free: false, pro: true },
+                    { label: "وضع السيناريوهات", free: false, pro: true },
+                    { label: "التدريب", free: "محدود", pro: "غير محدود" },
+                  ].map((row, i) => (
+                    <tr key={row.label} className={i % 2 === 0 ? "" : "bg-secondary/10"}>
+                      <td className="p-4 text-foreground">{row.label}</td>
+                      <td className="p-4 text-center">
+                        {typeof row.free === "boolean" ? (
+                          row.free ? (
+                            <Check className="w-4 h-4 text-[#22C55E] mx-auto" />
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )
+                        ) : (
+                          <span className="text-xs text-muted-foreground">{row.free}</span>
+                        )}
+                      </td>
+                      <td className="p-4 text-center">
+                        {typeof row.pro === "boolean" ? (
+                          row.pro ? (
+                            <Check className="w-4 h-4 text-primary mx-auto" />
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )
+                        ) : (
+                          <span className="text-xs font-medium text-primary">{row.pro}</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+
         {/* Specific gap lock illustration */}
         <div className="max-w-3xl mx-auto mt-6">
           <Card className="p-5 bg-primary/5 border-primary/20 flex items-start gap-3">

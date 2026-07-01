@@ -1,11 +1,15 @@
 "use client"
 
+import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 
 export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false)
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
@@ -31,7 +35,22 @@ export default function LoginPage() {
                 <label className="text-sm text-foreground">كلمة المرور</label>
                 <Link href="#" className="text-xs text-primary hover:underline">نسيت كلمة المرور؟</Link>
               </div>
-              <Input type="password" placeholder="••••••••" className="h-10" />
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="h-10 pl-10"
+                  dir="ltr"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             <Link href="/dashboard" className="block">

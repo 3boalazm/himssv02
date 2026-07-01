@@ -7,7 +7,7 @@ import { Card }          from "@/components/ui/card"
 import { Button }        from "@/components/ui/button"
 import { Input }         from "@/components/ui/input"
 import { cn }            from "@/lib/utils"
-import { CreditCard, BarChart3, ClipboardList, Tag, Shield, FileText } from "lucide-react"
+import { CreditCard, BarChart3, ClipboardList, Tag, Shield, FileText, Settings, LayoutDashboard, Users } from "lucide-react"
 
 const TABS = [
   { id: "payment",   icon: CreditCard,    label: "مزودو الدفع"        },
@@ -19,9 +19,10 @@ const TABS = [
 ]
 
 const adminMenu = [
-  { icon: BarChart3, label: "لوحة الإدارة", href: "/admin" },
-  { icon: ClipboardList, label: "المستخدمون", href: "/admin/users" },
-  { icon: Tag, label: "المحتوى", href: "/admin/content" },
+  { icon: LayoutDashboard, label: "لوحة تحكم النظام", href: "/admin" },
+  { icon: Users, label: "إدارة المستخدمين", href: "/admin/users" },
+  { icon: FileText, label: "إدارة المحتوى", href: "/admin/content" },
+  { icon: Settings, label: "إعدادات المنصة", href: "/admin/settings" },
 ]
 
 function SH({ title }: { title: string }) {

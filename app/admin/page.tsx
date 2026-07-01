@@ -3,7 +3,7 @@
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, Activity, ClipboardCheck, CreditCard, RefreshCw, LayoutDashboard, FileText } from "lucide-react"
+import { Users, Activity, ClipboardCheck, CreditCard, RefreshCw, LayoutDashboard, FileText, Settings } from "lucide-react"
 import Link from "next/link"
 
 // Admin nav — different routes for the admin variant
@@ -11,6 +11,7 @@ const adminMenu = [
   { icon: LayoutDashboard, label: "لوحة تحكم النظام", href: "/admin" },
   { icon: Users, label: "إدارة المستخدمين", href: "/admin/users" },
   { icon: FileText, label: "إدارة المحتوى", href: "/admin/content" },
+  { icon: Settings, label: "إعدادات المنصة", href: "/admin/settings" },
 ]
 
 const stats = [

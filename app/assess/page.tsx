@@ -83,11 +83,18 @@ export default function AssessPage() {
             الكامل مجاني — لا يُقفل أبداً.
           </p>
 
-          <Link href="/assess/session/1">
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-              ابدأ التقييم
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/assess/session/1">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+                ابدأ التقييم
+              </Button>
+            </Link>
+            <Link href="/assess/history">
+              <Button size="lg" variant="outline">
+                سجل التقييمات السابقة
+              </Button>
+            </Link>
+          </div>
         </div>
       </main>
     </div>

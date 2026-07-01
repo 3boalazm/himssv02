@@ -4,12 +4,13 @@ import { useState } from "react"
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plus, Upload, FileText, Clock, LayoutDashboard, Users } from "lucide-react"
+import { Plus, Upload, FileText, Clock, LayoutDashboard, Users, Settings } from "lucide-react"
 
 const adminMenu = [
   { icon: LayoutDashboard, label: "لوحة تحكم النظام", href: "/admin" },
   { icon: Users, label: "إدارة المستخدمين", href: "/admin/users" },
   { icon: FileText, label: "إدارة المحتوى", href: "/admin/content" },
+  { icon: Settings, label: "إعدادات المنصة", href: "/admin/settings" },
 ]
 
 // Status badges — amber for review, teal for published, neutral for draft. NO red for returned.

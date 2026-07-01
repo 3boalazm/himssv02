@@ -34,10 +34,9 @@ const narratives: Record<string, string> = {
 }
 
 function masteryColor(score: number): string {
-  if (score >= 70) return "#0F6B6B"
-  if (score >= 55) return "#3E8C7E"
-  if (score >= 40) return "#C99A3A"
-  return "#B45309"
+  if (score >= 70) return "#22C55E"
+  if (score >= 40) return "#14B8A6"
+  return "#3B82F6"
 }
 
 export default function ResultsPage() {

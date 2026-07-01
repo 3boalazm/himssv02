@@ -1,91 +1,87 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { TrendingUp, TrendingDown, Users, CheckCircle, Clock, Target, ArrowUpRight } from "lucide-react"
-import { useState } from "react"
+import { CheckCircle, Target, Users, Clock } from "lucide-react"
 
 const stats = [
-  { title: "Total Tasks Completed", value: "247", change: "+12%", trend: "up", icon: CheckCircle },
-  { title: "Active Projects", value: "12", change: "+3", trend: "up", icon: Target },
-  { title: "Team Members", value: "24", change: "-2", trend: "down", icon: Users },
-  { title: "Avg. Completion Time", value: "2.3", subtitle: "days", change: "-0.5", trend: "up", icon: Clock },
+  { title: "دروس مكتملة هذا الشهر", value: "148", change: "↓ 12 عن الشهر الماضي", icon: CheckCircle },
+  { title: "معدل الإنجاز", value: "67%", change: "↑ 8% عن الشهر الماضي", icon: Target },
+  { title: "أعضاء نشطون", value: "24", change: "↑ 6% عن الشهر الماضي", icon: Users },
+  { title: "وقت التعلم اليومي", value: "1.4h", change: "↓ 12د عن الشهر الماضي", icon: Clock },
 ]
 
-const monthlyData = [
-  { month: "Jan", tasks: 45, projects: 8 },
-  { month: "Feb", tasks: 52, projects: 9 },
-  { month: "Mar", tasks: 48, projects: 10 },
-  { month: "Apr", tasks: 61, projects: 11 },
-  { month: "May", tasks: 55, projects: 12 },
-  { month: "Jun", tasks: 67, projects: 12 },
+// Performance distribution by domain (blue→teal→green — no red/amber)
+const domainPerf = [
+  { label: "نظم المعلومات الصحية", score: 78 },
+  { label: "التشغيل البيني", score: 65 },
+  { label: "التوافقية والمعايير", score: 54 },
+  { label: "الذكاء الاصطناعي والتحليلات", score: 42 },
+  { label: "الحوكمة الرقمية", score: 69 },
 ]
+
+// Monthly completion rate trend
+const monthly = [
+  { month: "يناير", pct: 35 },
+  { month: "فبراير", pct: 48 },
+  { month: "مارس", pct: 55 },
+  { month: "أبريل", pct: 62 },
+  { month: "مايو", pct: 69 },
+  { month: "يونيو", pct: 78 },
+]
+
+const leaderboard = [
+  { name: "ريم الشمري", lessons: 18, score: 92 },
+  { name: "سارة المطيري", lessons: 12, score: 84 },
+  { name: "لمياء القرني", lessons: 11, score: 79 },
+  { name: "خالد العتيبي", lessons: 8, score: 71 },
+]
+
+function tierColor(score: number): string {
+  if (score >= 70) return "#22C55E"
+  if (score >= 40) return "#14B8A6"
+  return "#3B82F6"
+}
 
 export function AnalyticsContent() {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
-  const maxTasks = Math.max(...monthlyData.map((d) => d.tasks))
-
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
+      {/* Stat tiles */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {stats.map((stat, index) => (
-          <Card
-            key={stat.title}
-            onMouseEnter={() => setHoveredCard(index)}
-            onMouseLeave={() => setHoveredCard(null)}
-            style={{ animationDelay: `${index * 100}ms` }}
-            className={`bg-card text-foreground p-4 transition-all duration-500 ease-out animate-slide-in-up cursor-pointer ${
-              hoveredCard === index ? "scale-105 shadow-2xl" : "shadow-lg"
-            }`}
-          >
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-full">
-                  <stat.icon className="w-4 h-4 text-primary" />
-                </div>
-                <h3 className="text-xs font-medium opacity-90">{stat.title}</h3>
-              </div>
-              <div
-                className={`w-6 h-6 rounded-full bg-primary flex items-center justify-center transition-transform duration-300 ${
-                  hoveredCard === index ? "rotate-45" : ""
-                }`}
-              >
-                <ArrowUpRight className="w-3 h-3 text-primary-foreground" />
-              </div>
+        {stats.map((stat) => (
+          <Card key={stat.title} className="p-4 animate-in-up card-interactive">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] text-muted-foreground">{stat.title}</span>
+              <stat.icon className="w-3.5 h-3.5 text-muted-foreground" />
             </div>
-            <p className="text-3xl font-bold mb-2">
-              {stat.value}
-              {stat.subtitle && <span className="text-base font-normal ml-1">{stat.subtitle}</span>}
-            </p>
-            <div className="flex items-center gap-1.5 text-xs opacity-80">
-              {stat.trend === "up" ? (
-                <TrendingUp className="w-3 h-3 text-green-600" />
-              ) : (
-                <TrendingDown className="w-3 h-3 text-red-600" />
-              )}
-              <span className={stat.trend === "up" ? "text-green-600" : "text-red-600"}>{stat.change}</span>
-            </div>
+            <div className="text-2xl font-bold text-foreground font-mono">{stat.value}</div>
+            <div className="text-[10px] text-muted-foreground mt-1">{stat.change}</div>
           </Card>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Performance by domain */}
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-6">Monthly Task Completion</h3>
-          <div className="space-y-4">
-            {monthlyData.map((data, index) => (
-              <div
-                key={data.month}
-                className="space-y-2 animate-slide-in"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium">{data.month}</span>
-                  <span className="text-muted-foreground">{data.tasks} tasks</span>
+          <h3 className="text-sm font-semibold text-foreground mb-1">توزيع الأداء</h3>
+          <p className="text-xs text-muted-foreground mb-4">حسب المجال التعليمي</p>
+          <div className="space-y-3">
+            {domainPerf.map((d) => (
+              <div key={d.label}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-foreground">{d.label}</span>
+                  <span className="text-xs font-mono font-bold" style={{ color: tierColor(d.score) }}>
+                    {d.score}%
+                  </span>
                 </div>
-                <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
+                <div className="progress-track h-2.5">
                   <div
-                    className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: `${(data.tasks / maxTasks) * 100}%` }}
+                    className="progress-fill-gradient animate-pulse-glow"
+                    style={
+                      {
+                        width: `${d.score}%`,
+                        "--pulse-color": "rgba(20,184,166,.5)",
+                      } as React.CSSProperties
+                    }
                   />
                 </div>
               </div>
@@ -93,30 +89,69 @@ export function AnalyticsContent() {
           </div>
         </Card>
 
+        {/* Monthly trend */}
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-6">Project Distribution</h3>
-          <div className="space-y-4">
-            {[
-              { name: "In Progress", count: 8, color: "bg-blue-500" },
-              { name: "Completed", count: 15, color: "bg-green-600" },
-              { name: "Pending", count: 5, color: "bg-amber-500" },
-              { name: "On Hold", count: 2, color: "bg-gray-500" },
-            ].map((item, index) => (
-              <div
-                key={item.name}
-                className="flex items-center justify-between p-3 rounded-lg border border-border hover:shadow-md transition-all duration-300 animate-slide-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full ${item.color}`} />
-                  <span className="font-medium">{item.name}</span>
+          <h3 className="text-sm font-semibold text-foreground mb-1">الإنجاز الشهري</h3>
+          <p className="text-xs text-muted-foreground mb-4">نسبة إتمام التقييمات</p>
+          <div className="space-y-3">
+            {monthly.map((m) => (
+              <div key={m.month} className="flex items-center gap-3">
+                <span className="text-xs text-muted-foreground w-14 flex-shrink-0">{m.month}</span>
+                <div className="progress-track h-2.5 flex-1">
+                  <div
+                    className="progress-fill-gradient animate-pulse-glow"
+                    style={
+                      {
+                        width: `${m.pct}%`,
+                        "--pulse-color": "rgba(34,197,94,.5)",
+                      } as React.CSSProperties
+                    }
+                  />
                 </div>
-                <span className="text-2xl font-bold text-foreground">{item.count}</span>
+                <span className="text-xs font-mono font-bold text-foreground w-9 text-left">{m.pct}%</span>
               </div>
             ))}
           </div>
         </Card>
       </div>
+
+      {/* Leaderboard */}
+      <Card className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-foreground">ترتيب الأعضاء</h3>
+          <span className="text-[11px] text-muted-foreground">مرتّب حسب الدرجة</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-[11px] text-muted-foreground border-b border-border">
+                <th className="text-right font-medium pb-2">#</th>
+                <th className="text-right font-medium pb-2">العضو</th>
+                <th className="text-right font-medium pb-2">الدروس</th>
+                <th className="text-right font-medium pb-2">الدرجة</th>
+                <th className="text-right font-medium pb-2">الحالة</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((m, i) => (
+                <tr key={m.name} className="border-b border-border/50">
+                  <td className="py-2.5 text-muted-foreground font-mono">{i + 1}</td>
+                  <td className="py-2.5 text-foreground">{m.name}</td>
+                  <td className="py-2.5 text-foreground font-mono">{m.lessons}</td>
+                  <td className="py-2.5">
+                    <span className="font-mono font-bold" style={{ color: tierColor(m.score) }}>
+                      {m.score}%
+                    </span>
+                  </td>
+                  <td className="py-2.5">
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">نشط</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   )
 }

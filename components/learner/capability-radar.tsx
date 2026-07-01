@@ -1,5 +1,9 @@
 "use client"
 
+import {
+  Database, Share2, ShieldCheck, BrainCircuit, Compass, RefreshCcw, type LucideIcon,
+} from "lucide-react"
+
 /**
  * CapabilityRadar — THE signature visual of HLOS.
  *
@@ -7,6 +11,7 @@
  *   - /matrix (full size)
  *   - /assess/results/[id] (with reveal animation)
  *   - /dashboard (mini variant)
+ *   - / (landing, sample)
  *
  * Design rules (locked — see F.3 / F.8):
  *   - Sequential teal fill — NEVER traffic-light red/green.
@@ -36,6 +41,18 @@ function masteryColor(score: number): string {
   if (score >= 70) return "#22C55E" // green — strong
   if (score >= 40) return "#14B8A6" // teal — mid
   return "#3B82F6" // blue — needs focus
+}
+
+// Keyword → icon lookup, so every existing `domains` array (which uses
+// slightly different short/full label text per page) gets a matching icon
+// automatically without needing to edit each page's data.
+function iconFor(label: string): LucideIcon {
+  if (/معلومات|نظم|Database/.test(label)) return Database
+  if (/تشغيل|NPHIES|بيني/.test(label)) return Share2
+  if (/أمن|خصوصي|PDPL/.test(label)) return ShieldCheck
+  if (/تحليل|ذكاء/.test(label)) return BrainCircuit
+  if (/قياد|حوكم/.test(label)) return Compass
+  return RefreshCcw // change management / fallback
 }
 
 const INK = "#16242F"
@@ -103,7 +120,7 @@ export function CapabilityRadar({
     const y = cy + labelR * Math.sin(a)
     const cosv = Math.cos(a)
     const anchor = Math.abs(cosv) < 0.3 ? "middle" : cosv > 0 ? "start" : "end"
-    return { x, y, anchor, label: d.label, score: d.score, color: masteryColor(d.score) }
+    return { x, y, anchor, label: d.label, score: d.score, color: masteryColor(d.score), Icon: iconFor(d.label) }
   })
 
   return (
@@ -189,6 +206,11 @@ export function CapabilityRadar({
       {showLabels &&
         labels.map((l, i) => (
           <g key={`label-${i}`}>
+            {size >= 300 && (
+              <foreignObject x={l.x - 8} y={l.y - 26} width={16} height={16} style={{ overflow: "visible" }}>
+                <l.Icon size={14} color={l.color} strokeWidth={2.2} />
+              </foreignObject>
+            )}
             <text
               x={l.x}
               y={l.y - 6}

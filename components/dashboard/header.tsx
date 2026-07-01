@@ -4,9 +4,23 @@ import { Bell, UserPlus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { MobileNav } from "./mobile-nav"
-import { useState } from "react"
+import { useState, type ReactNode } from "react"
+import Link from "next/link"
 
-export function Header() {
+interface HeaderProps {
+  title?: string
+  description?: string
+  actions?: ReactNode
+  /** Show the "N members haven't started" alert banner (org context only) */
+  showOrgAlert?: boolean
+}
+
+export function Header({
+  title = "لوحة التحكم",
+  description = "مستشفى الملك فهد · يونيو 2026",
+  actions,
+  showOrgAlert = true,
+}: HeaderProps) {
   const [showInvite, setShowInvite] = useState(false)
 
   return (
@@ -15,8 +29,8 @@ export function Header() {
         <div className="flex items-center gap-3">
           <MobileNav />
           <div>
-            <h1 className="text-xl font-bold text-foreground">لوحة التحكم</h1>
-            <p className="text-xs text-muted-foreground">مستشفى الملك فهد · يونيو 2026</p>
+            <h1 className="text-xl font-bold text-foreground">{title}</h1>
+            <p className="text-xs text-muted-foreground">{description}</p>
           </div>
         </div>
 
@@ -24,17 +38,21 @@ export function Header() {
           <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-secondary">
             <Search className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-secondary relative">
-            <Bell className="w-4 h-4" />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-amber-500 rounded-full" />
-          </Button>
-          <Button
-            onClick={() => setShowInvite(true)}
-            className="h-9 text-sm bg-primary hover:bg-primary/90 text-white gap-1.5"
-          >
-            <UserPlus className="w-4 h-4" />
-            دعوة أعضاء
-          </Button>
+          <Link href="/notifications">
+            <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-secondary relative">
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#3B82F6] rounded-full" />
+            </Button>
+          </Link>
+          {actions ?? (
+            <Button
+              onClick={() => setShowInvite(true)}
+              className="h-9 text-sm bg-primary hover:bg-primary/90 text-white gap-1.5"
+            >
+              <UserPlus className="w-4 h-4" />
+              دعوة أعضاء
+            </Button>
+          )}
           <div className="flex items-center gap-2 pr-2 border-r border-border">
             <Avatar className="w-8 h-8">
               <AvatarFallback className="bg-primary/20 text-primary text-xs font-bold">م.ع</AvatarFallback>
@@ -43,15 +61,17 @@ export function Header() {
         </div>
       </header>
 
-      {/* Alert banner */}
-      <div className="flex items-center justify-between bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-2.5 mb-5 animate-slide-in-up">
-        <p className="text-sm text-amber-400">
-          ⚠️ <span className="font-medium">8 أعضاء</span> لم يبدأوا التقييم بعد
-        </p>
-        <Button size="sm" className="h-7 text-xs bg-amber-500 hover:bg-amber-600 text-black font-medium">
-          إرسال تذكير
-        </Button>
-      </div>
+      {/* Alert banner (org context) */}
+      {showOrgAlert && (
+        <div className="flex items-center justify-between bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-xl px-4 py-2.5 mb-5 animate-slide-in-up">
+          <p className="text-sm text-[#3B82F6]">
+            <span className="font-medium">8 أعضاء</span> لم يبدأوا التقييم بعد
+          </p>
+          <Button size="sm" className="h-7 text-xs bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-medium">
+            إرسال تذكير
+          </Button>
+        </div>
+      )}
 
       {/* Invite Modal */}
       {showInvite && (

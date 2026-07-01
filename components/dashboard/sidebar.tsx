@@ -1,6 +1,6 @@
 "use client"
 
-import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon, Target, Grid3x3, Dumbbell, Route, BookOpen, FileText } from "lucide-react"
+import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon, Target, Grid3x3, Dumbbell, Route, BookOpen, FileText, Bell } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import Link from "next/link"
@@ -27,14 +27,15 @@ const learnerMenu: NavItem[] = [
 ]
 
 const defaultGeneralItems: NavItem[] = [
-  { icon: Settings, label: "إعدادات المؤسسة", href: "/settings"           },
+  { icon: Settings, label: "إعدادات المؤسسة", href: "/org/settings"       },
   { icon: Mail,     label: "الدعوات المعلقة", href: "#",      badge: "3"  },
   { icon: LogOut,   label: "تسجيل الخروج",    href: "/logout"             },
 ]
 
 const learnerGeneralItems: NavItem[] = [
-  { icon: Settings, label: "الإعدادات",     href: "/settings" },
-  { icon: LogOut,   label: "تسجيل الخروج",  href: "/logout"   },
+  { icon: Bell,     label: "الإشعارات",       href: "/notifications" },
+  { icon: Settings, label: "الإعدادات",       href: "/settings" },
+  { icon: LogOut,   label: "تسجيل الخروج",    href: "/logout"   },
 ]
 
 interface NavItem {
