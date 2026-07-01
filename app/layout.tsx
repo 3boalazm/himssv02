@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import { SitemapFab } from "@/components/sitemap-fab"
 
 export const metadata: Metadata = {
   title: "HLOS — لوحة تحكم المؤسسة",
@@ -17,10 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="font-sans antialiased">
-        {children}
-        <SitemapFab />
-      </body>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   )
 }
