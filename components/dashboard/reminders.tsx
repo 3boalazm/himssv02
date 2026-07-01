@@ -5,9 +5,9 @@ import { Mail, Download, FileSpreadsheet, BookMarked, Bell } from "lucide-react"
 
 const actions = [
   { icon: Mail,            label: "دعوة أعضاء جدد",       badge: null,  color: "text-primary" },
-  { icon: Download,        label: "تصدير تقرير PDF",        badge: null,  color: "text-blue-400" },
-  { icon: FileSpreadsheet, label: "تصدير بيانات Excel",     badge: null,  color: "text-green-400" },
-  { icon: BookMarked,      label: "تعيين مسار تعليمي",      badge: null,  color: "text-purple-400" },
+  { icon: Download,        label: "تصدير تقرير PDF",        badge: null,  color: "text-muted-foreground" },
+  { icon: FileSpreadsheet, label: "تصدير بيانات Excel",     badge: null,  color: "text-muted-foreground" },
+  { icon: BookMarked,      label: "تعيين مسار تعليمي",      badge: null,  color: "text-primary" },
   { icon: Bell,            label: "تذكير غير النشطين",      badge: "8",   color: "text-amber-400" },
 ]
 

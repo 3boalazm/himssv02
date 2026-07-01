@@ -4,29 +4,33 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0f172a;
-  --foreground: #e2e8f0;
-  --card: #1e293b;
-  --card-foreground: #e2e8f0;
-  --popover: #2d3d52;
-  --popover-foreground: #e2e8f0;
+  /* ─── LIGHT MODE — locked HLOS design system ───────────────────────────
+   * Surface: warm near-white #FAF9F7 · Ink: deep #16242F · Primary: teal #0F6B6B
+   * "Clinical instrument panel" — calm, high-legibility, no dark chrome.
+   * ───────────────────────────────────────────────────────────────────── */
+  --background: #FAF9F7;
+  --foreground: #16242F;
+  --card: #FFFFFF;
+  --card-foreground: #16242F;
+  --popover: #FFFFFF;
+  --popover-foreground: #16242F;
   --primary: #0F6B6B;
   --primary-foreground: #ffffff;
-  --secondary: #263245;
-  --secondary-foreground: #e2e8f0;
-  --muted: #263245;
-  --muted-foreground: #94a3b8;
+  --secondary: #F0EEEA;
+  --secondary-foreground: #16242F;
+  --muted: #F0EEEA;
+  --muted-foreground: #5C6B73;
   --accent: #0F6B6B;
   --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  --destructive: #A32D2D;
   --destructive-foreground: #ffffff;
-  --border: #334155;
-  --input: #334155;
+  --border: #E4E1DB;
+  --input: #E4E1DB;
   --ring: #0F6B6B;
-  --success: #22c55e;
-  --success-bg: rgba(34,197,94,0.12);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245,158,11,0.12);
+  --success: #0F6B6B;
+  --success-bg: rgba(15,107,107,0.10);
+  --warning: #B45309;
+  --warning-bg: rgba(180,83,9,0.10);
   /*
    * --color-danger — QUIET CRIMSON: DISTINCT from amber, reserved for system failures only.
    *
@@ -69,19 +73,20 @@
   /* warning in scenario = amber, never red (pressure is part of exercise) */
   --scenario-accent-warning: #B45309;
 
+  /* Sequential mastery scale: deep teal (mastery) → warm amber (gap). No green/red. */
   --chart-1: #0F6B6B;
-  --chart-2: #22c55e;
-  --chart-3: #f59e0b;
-  --chart-4: #ef4444;
-  --chart-5: #38bdf8;
+  --chart-2: #3E8C7E;
+  --chart-3: #C99A3A;
+  --chart-4: #B45309;
+  --chart-5: #5C6B73;
   --radius: 0.75rem;
-  --sidebar: #1e293b;
-  --sidebar-foreground: #e2e8f0;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #16242F;
   --sidebar-primary: #0F6B6B;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #263245;
-  --sidebar-accent-foreground: #e2e8f0;
-  --sidebar-border: #334155;
+  --sidebar-accent: #F0EEEA;
+  --sidebar-accent-foreground: #16242F;
+  --sidebar-border: #E4E1DB;
   --sidebar-ring: #0F6B6B;
 }
 
@@ -226,3 +231,17 @@
 }
 .animate-slide-in-up { animation: slideInUp 0.5s ease-out forwards; }
 .animate-float       { animation: float 3s ease-in-out infinite; }
+
+/* CapabilityRadar reveal (results screen — the one theatrical moment, F.4) */
+@keyframes radarIn {
+  from { opacity: 0; transform: scale(.72); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes dotIn {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

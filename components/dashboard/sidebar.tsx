@@ -1,6 +1,6 @@
 "use client"
 
-import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon } from "lucide-react"
+import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon, Target, Grid3x3, Dumbbell, Route, BookOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import Link from "next/link"
@@ -14,10 +14,25 @@ const defaultOrgMenu: NavItem[] = [
 ]
 // /tasks removed (PM scaffold) — learning paths live in HLOS DC platform
 
+// ─── Learner variant nav ──────────────────────────────────────────────────────
+const learnerMenu: NavItem[] = [
+  { icon: LayoutDashboard, label: "لوحتي",              href: "/dashboard"  },
+  { icon: Target,          label: "التقييم",            href: "/assess"     },
+  { icon: Grid3x3,         label: "مصفوفة القدرات",     href: "/matrix"     },
+  { icon: Dumbbell,        label: "التدريب",            href: "/practice"   },
+  { icon: Route,           label: "المسارات",           href: "/paths"      },
+  { icon: BookOpen,        label: "الدروس",             href: "/lessons"    },
+]
+
 const defaultGeneralItems: NavItem[] = [
   { icon: Settings, label: "إعدادات المؤسسة", href: "/settings"           },
   { icon: Mail,     label: "الدعوات المعلقة", href: "#",      badge: "3"  },
   { icon: LogOut,   label: "تسجيل الخروج",    href: "/logout"             },
+]
+
+const learnerGeneralItems: NavItem[] = [
+  { icon: Settings, label: "الإعدادات",     href: "/settings" },
+  { icon: LogOut,   label: "تسجيل الخروج",  href: "/logout"   },
 ]
 
 interface NavItem {
@@ -29,11 +44,11 @@ interface NavItem {
 
 interface SidebarProps {
   /**
-   * "org"   — full org-admin shell (default): 224px wide, generous spacing
-   * "admin" — super-admin shell: 208px wide, 25% tighter padding, smaller icons
-   *           Pass menuItems prop to override the nav for admin context.
+   * "org"     — full org-admin shell (default): 224px wide, generous spacing
+   * "admin"   — super-admin shell: 208px wide, 25% tighter padding, smaller icons
+   * "learner" — individual practitioner shell: learner nav, 224px wide
    */
-  variant?: "org" | "admin"
+  variant?: "org" | "admin" | "learner"
   /** Override main nav items (useful for admin variant with different routes) */
   menuItems?: NavItem[]
 }
@@ -42,16 +57,16 @@ export function Sidebar({ variant = "org", menuItems }: SidebarProps) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const pathname  = usePathname()
   const isAdmin   = variant === "admin"
+  const isLearner = variant === "learner"
 
   // ── Variant-driven tokens ────────────────────────────────────────────────
   const sidebarWidth  = isAdmin ? "w-52"  : "w-56"       // 208px vs 224px
-  const marginRight   = isAdmin ? "lg:mr-52" : "lg:mr-56" // consumed by parent layout
   const iconClass     = isAdmin ? "w-3.5 h-3.5" : "w-4 h-4"
   const itemPadding   = isAdmin ? "px-2.5 py-1.5" : "px-3 py-2"
   const itemText      = isAdmin ? "text-xs" : "text-sm"
 
-  const mainNav     = menuItems ?? defaultOrgMenu
-  const generalNav  = defaultGeneralItems
+  const mainNav     = menuItems ?? (isLearner ? learnerMenu : defaultOrgMenu)
+  const generalNav  = isLearner ? learnerGeneralItems : defaultGeneralItems
 
   const navLink = (item: NavItem) => {
     const isActive = pathname === item.href
@@ -90,11 +105,11 @@ export function Sidebar({ variant = "org", menuItems }: SidebarProps) {
         </div>
         <div className="min-w-0">
           <p className="text-sm font-semibold text-foreground truncate">
-            {isAdmin ? "HLOS" : "مستشفى الملك فهد"}
+            {isAdmin ? "HLOS" : isLearner ? "أحمد بدير" : "مستشفى الملك فهد"}
           </p>
           {/* admin: no org subtitle — just role label */}
           <p className="text-[10px] text-muted-foreground">
-            {isAdmin ? "لوحة الإدارة" : "org_admin · 36 / 50 seat"}
+            {isAdmin ? "لوحة الإدارة" : isLearner ? "ممارس متقدم" : "org_admin · 36 / 50 seat"}
           </p>
         </div>
       </div>
@@ -117,7 +132,7 @@ export function Sidebar({ variant = "org", menuItems }: SidebarProps) {
       </div>
 
       {/* Contract expiry (org only) */}
-      {!isAdmin && (
+      {!isAdmin && !isLearner && (
         <div className="mt-4 pt-4 border-t border-border">
           <div className="bg-warning/10 border border-warning/30 rounded-lg px-3 py-2">
             <p className="text-[10px] text-warning font-medium">العقد ينتهي: يونيو 2026</p>

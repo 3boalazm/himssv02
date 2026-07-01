@@ -8,14 +8,14 @@ export default function AnalyticsPage() {
     <div className="flex min-h-screen bg-background">
       <Sidebar />
 
-      <main className="flex-1 p-4 lg:p-6 lg:ml-64">
+      <main className="flex-1 p-4 lg:p-6 lg:mr-56">
         <Header
           title="Analytics"
           description="Track your performance and productivity metrics."
           actions={
             <Button
               variant="outline"
-              className="w-full sm:w-auto h-9 text-sm transition-all duration-300 hover:shadow-md hover:scale-105 bg-transparent"
+              className="w-full sm:w-auto h-9 text-sm transition-colors hover:shadow-md bg-transparent"
             >
               Export Report
             </Button>
