@@ -1,6 +1,6 @@
 "use client"
 
-import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon, Target, Grid3x3, Dumbbell, Route, BookOpen } from "lucide-react"
+import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon, Target, Grid3x3, Dumbbell, Route, BookOpen, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import Link from "next/link"
@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation"
 
 // ─── Default nav for org variant ──────────────────────────────────────────────
 const defaultOrgMenu: NavItem[] = [
-  { icon: LayoutDashboard, label: "لوحة التحكم",       href: "/"           },
+  { icon: LayoutDashboard, label: "لوحة التحكم",       href: "/org"        },
   { icon: Users,           label: "أعضاء الفريق",      href: "/team"       },
   { icon: BarChart3,       label: "التقارير",           href: "/analytics"  },
 ]
@@ -22,6 +22,7 @@ const learnerMenu: NavItem[] = [
   { icon: Dumbbell,        label: "التدريب",            href: "/practice"   },
   { icon: Route,           label: "المسارات",           href: "/paths"      },
   { icon: BookOpen,        label: "الدروس",             href: "/lessons"    },
+  { icon: FileText,        label: "التقارير",           href: "/reports"    },
 ]
 
 const defaultGeneralItems: NavItem[] = [
@@ -36,7 +37,7 @@ const learnerGeneralItems: NavItem[] = [
 ]
 
 interface NavItem {
-  icon: LucideIcon
+  icon?: LucideIcon
   label: string
   href: string
   badge?: string
@@ -83,7 +84,7 @@ export function Sidebar({ variant = "org", menuItems }: SidebarProps) {
             : "text-muted-foreground hover:bg-secondary hover:text-foreground",
         )}
       >
-        <item.icon className={cn(iconClass, "flex-shrink-0")} />
+        {item.icon && <item.icon className={cn(iconClass, "flex-shrink-0")} />}
         <span className={cn(itemText, "flex-1")}>{item.label}</span>
         {item.badge && (
           <span className="bg-warning/20 text-warning text-[10px] font-bold px-1.5 py-0.5 rounded-full">
