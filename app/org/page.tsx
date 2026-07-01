@@ -24,10 +24,9 @@ const teamDomains = [
 ]
 
 function masteryColor(score: number): string {
-  if (score >= 70) return "#0F6B6B"
-  if (score >= 55) return "#3E8C7E"
-  if (score >= 40) return "#C99A3A"
-  return "#B45309"
+  if (score >= 70) return "#22C55E"
+  if (score >= 40) return "#F59E0B"
+  return "#EF4444"
 }
 
 const statusStyle: Record<string, string> = {
@@ -141,10 +140,20 @@ export default function OrgDashboardPage() {
                       {d.score}%
                     </span>
                   </div>
-                  <div className="h-2 rounded-full bg-secondary overflow-hidden">
+                  <div className="progress-track h-3">
                     <div
-                      className="h-full rounded-full"
-                      style={{ width: `${d.score}%`, background: masteryColor(d.score) }}
+                      className="progress-fill-gradient animate-pulse-glow"
+                      style={
+                        {
+                          width: `${d.score}%`,
+                          "--pulse-color":
+                            masteryColor(d.score) === "#22C55E"
+                              ? "rgba(34,197,94,.55)"
+                              : masteryColor(d.score) === "#F59E0B"
+                                ? "rgba(245,158,11,.55)"
+                                : "rgba(239,68,68,.55)",
+                        } as React.CSSProperties
+                      }
                     />
                   </div>
                 </div>

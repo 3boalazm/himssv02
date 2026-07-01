@@ -31,12 +31,11 @@ interface CapabilityRadarProps {
   animate?: boolean
 }
 
-// Sequential teal→amber — mastery to gap. No red, no green.
+// Traffic-light scale (site-wide, by product decision — red/amber/green).
 function masteryColor(score: number): string {
-  if (score >= 70) return "#0F6B6B" // deep teal — mastery
-  if (score >= 55) return "#3E8C7E" // teal-green transition
-  if (score >= 40) return "#C99A3A" // mid amber
-  return "#B45309" // deep amber — gap (NOT red)
+  if (score >= 70) return "#22C55E" // green — strong
+  if (score >= 40) return "#F59E0B" // amber — mid
+  return "#EF4444" // red — needs attention
 }
 
 const INK = "#16242F"
@@ -139,13 +138,28 @@ export function CapabilityRadar({
         />
       ))}
 
-      {/* Domain polygon */}
+      {/* Domain polygon — glowing gradient stroke */}
+      <defs>
+        <linearGradient id="radarGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#22C55E" />
+          <stop offset="50%" stopColor="#F59E0B" />
+          <stop offset="100%" stopColor="#EF4444" />
+        </linearGradient>
+        <filter id="radarGlow" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
       <polygon
         points={dataPoints}
-        fill="rgba(15,107,107,.12)"
-        stroke="#0F6B6B"
-        strokeWidth={2.5}
+        fill="rgba(34,197,94,.14)"
+        stroke="url(#radarGlowGrad)"
+        strokeWidth={3}
         strokeLinejoin="round"
+        filter="url(#radarGlow)"
         style={
           animate
             ? { animation: "radarIn .9s .3s ease-out both", transformOrigin: `${cx}px ${cy}px` }

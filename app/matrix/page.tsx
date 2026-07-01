@@ -25,17 +25,29 @@ const conceptHeat = [
 ]
 
 // Level bands
-const levels = ["مبتدئ", "ممارس", "معماري", "تنفيذي"]
+const levels = [
+  { ar: "مبتدئ", en: "Beginner" },
+  { ar: "ممارس", en: "Practitioner" },
+  { ar: "معماري", en: "Architect" },
+  { ar: "تنفيذي", en: "Executive" },
+]
+
+function levelFor(score: number) {
+  if (score >= 80) return { ar: "تنفيذي", en: "Executive" }
+  if (score >= 60) return { ar: "معماري", en: "Architect" }
+  if (score >= 35) return { ar: "ممارس", en: "Practitioner" }
+  return { ar: "مبتدئ", en: "Beginner" }
+}
 
 function masteryColor(score: number): string {
-  if (score >= 70) return "#0F6B6B"
-  if (score >= 55) return "#3E8C7E"
-  if (score >= 40) return "#C99A3A"
-  return "#B45309"
+  if (score >= 70) return "#22C55E"
+  if (score >= 40) return "#F59E0B"
+  return "#EF4444"
 }
 
 export default function MatrixPage() {
   const overall = Math.round(domains.reduce((s, d) => s + d.score, 0) / domains.length)
+  const overallLevel = levelFor(overall)
   // Top 3 gaps (free tier sees these by name)
   const gaps = [...domains].sort((a, b) => a.score - b.score).slice(0, 3)
 
@@ -49,6 +61,7 @@ export default function MatrixPage() {
           <h1 className="text-2xl font-bold text-foreground">مصفوفة الجاهزية المهنية</h1>
           <p className="text-sm text-muted-foreground mt-1">
             تقييم شامل · {domains.length} مجالات · متوسط الجاهزية {overall}%
+            <span className="text-muted-foreground/70"> · {overallLevel.en} Level</span>
           </p>
         </div>
 
@@ -57,17 +70,21 @@ export default function MatrixPage() {
           <Card className="lg:col-span-3 p-6 flex flex-col items-center justify-center">
             <div className="flex items-center gap-4 mb-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#0F6B6B" }} />
-                إتقان
+                <span className="w-2.5 h-2.5 rounded-full glow-green" style={{ background: "#22C55E" }} />
+                قوي · Strong
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#B45309" }} />
-                فجوة — فرصة تطوير
+                <span className="w-2.5 h-2.5 rounded-full glow-amber" style={{ background: "#F59E0B" }} />
+                متوسط · Moderate
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full glow-red" style={{ background: "#EF4444" }} />
+                ضعيف · Needs Focus
               </span>
             </div>
             <CapabilityRadar domains={domains} size={400} />
             <p className="text-[11px] text-muted-foreground mt-2">
-              مقياس متدرج من الإتقان إلى الفجوة — لا أحمر ولا أخضر
+              مقياس الجاهزية — أحمر → عنبري → أخضر
             </p>
           </Card>
 
@@ -89,10 +106,20 @@ export default function MatrixPage() {
                         {d.score}%
                       </span>
                     </div>
-                    <div className="h-2 rounded-full bg-secondary overflow-hidden">
+                    <div className="progress-track h-3">
                       <div
-                        className="h-full rounded-full"
-                        style={{ width: `${d.score}%`, background: masteryColor(d.score) }}
+                        className="progress-fill-gradient animate-pulse-glow"
+                        style={
+                          {
+                            width: `${d.score}%`,
+                            "--pulse-color":
+                              masteryColor(d.score) === "#22C55E"
+                                ? "rgba(34,197,94,.55)"
+                                : masteryColor(d.score) === "#F59E0B"
+                                  ? "rgba(245,158,11,.55)"
+                                  : "rgba(239,68,68,.55)",
+                          } as React.CSSProperties
+                        }
                       />
                     </div>
                   </div>
@@ -104,14 +131,22 @@ export default function MatrixPage() {
               <p className="text-[10px] text-muted-foreground mb-2">مستويات الجاهزية</p>
               <div className="flex gap-1">
                 {levels.map((lvl, i) => (
-                  <div key={lvl} className="flex-1 text-center">
+                  <div key={lvl.en} className="flex-1 text-center">
                     <div
-                      className="h-1.5 rounded-full mb-1"
+                      className="h-1.5 rounded-full mb-1 glow-pulse"
                       style={{
-                        background: [`#B45309`, `#C99A3A`, `#3E8C7E`, `#0F6B6B`][i],
-                      }}
+                        background: [`#EF4444`, `#F59E0B`, `#F59E0B`, `#22C55E`][i],
+                        // @ts-ignore custom property for glow color
+                        "--pulse-color": [
+                          "rgba(239,68,68,.5)",
+                          "rgba(245,158,11,.5)",
+                          "rgba(245,158,11,.5)",
+                          "rgba(34,197,94,.5)",
+                        ][i],
+                      } as React.CSSProperties}
                     />
-                    <span className="text-[9px] text-muted-foreground">{lvl}</span>
+                    <span className="text-[9px] text-muted-foreground block">{lvl.ar}</span>
+                    <span className="text-[8px] text-muted-foreground/60">{lvl.en}</span>
                   </div>
                 ))}
               </div>

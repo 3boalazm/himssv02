@@ -149,9 +149,13 @@ export default function LearnerDashboardPage() {
               عرض الكل
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {recentActivity.map((a, i) => (
-              <div key={i} className="flex items-center gap-3">
+              <div
+                key={i}
+                className="activity-item flex items-center gap-3"
+                style={{ "--accent-color": a.done ? "#22C55E" : "#F59E0B" } as React.CSSProperties}
+              >
                 <a.icon
                   className={`w-4 h-4 flex-shrink-0 ${a.done ? "text-primary" : "text-muted-foreground"}`}
                 />
