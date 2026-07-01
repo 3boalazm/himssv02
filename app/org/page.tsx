@@ -25,8 +25,8 @@ const teamDomains = [
 
 function masteryColor(score: number): string {
   if (score >= 70) return "#22C55E"
-  if (score >= 40) return "#F59E0B"
-  return "#EF4444"
+  if (score >= 40) return "#14B8A6"
+  return "#3B82F6"
 }
 
 const statusStyle: Record<string, string> = {
@@ -149,9 +149,9 @@ export default function OrgDashboardPage() {
                           "--pulse-color":
                             masteryColor(d.score) === "#22C55E"
                               ? "rgba(34,197,94,.55)"
-                              : masteryColor(d.score) === "#F59E0B"
-                                ? "rgba(245,158,11,.55)"
-                                : "rgba(239,68,68,.55)",
+                              : masteryColor(d.score) === "#14B8A6"
+                                ? "rgba(20,184,166,.55)"
+                                : "rgba(59,130,246,.55)",
                         } as React.CSSProperties
                       }
                     />

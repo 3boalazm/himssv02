@@ -33,7 +33,7 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
       style={{
         minHeight: "100vh",
         background: "linear-gradient(180deg, #16242F 0%, #1E1B2E 100%)",
-        fontFamily: "'IBM Plex Sans Arabic', system-ui, sans-serif",
+        fontFamily: "'Zak', 'IBM Plex Sans Arabic', system-ui, sans-serif",
         padding: "0",
       }}
     >
@@ -42,7 +42,7 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
           <button
             onClick={() => router.back()}
-            style={{ display: "flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
+            style={{ display: "flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif" }}
           >
             <ArrowRight size={14} />
             العودة للكتالوج
@@ -97,7 +97,7 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
           <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 14 }}>
             <button
               onClick={() => router.push(`/scenarios/${params.id}/play`)}
-              style={{ height: 46, padding: "0 32px", background: "#0F6B6B", color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'IBM Plex Sans Arabic', sans-serif", boxShadow: "0 4px 18px rgba(15,107,107,0.45)", transition: "background 150ms ease" }}
+              style={{ height: 46, padding: "0 32px", background: "#0F6B6B", color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif", boxShadow: "0 4px 18px rgba(15,107,107,0.45)", transition: "background 150ms ease" }}
             >
               بدء السيناريو
             </button>

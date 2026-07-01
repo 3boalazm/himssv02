@@ -11,8 +11,11 @@ export default function LessonReaderPage() {
 
       <main className="flex-1 lg:mr-56">
         {/* Reading progress bar (top) */}
-        <div className="sticky top-0 z-10 h-1 bg-secondary">
-          <div className="h-full bg-primary" style={{ width: "35%" }} />
+        <div className="progress-track sticky top-0 z-10 h-1.5 rounded-none">
+          <div
+            className="progress-fill-gradient animate-pulse-glow"
+            style={{ width: "35%", "--pulse-color": "rgba(20,184,166,.5)" } as React.CSSProperties}
+          />
         </div>
 
         <div className="p-4 lg:p-6">

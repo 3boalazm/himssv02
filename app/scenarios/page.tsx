@@ -78,7 +78,7 @@ export default function ScenariosPage() {
       style={{
         minHeight: "100vh",
         background: "linear-gradient(180deg, #16242F 0%, #1E1B2E 100%)",
-        fontFamily: "'IBM Plex Sans Arabic', system-ui, sans-serif",
+        fontFamily: "'Zak', 'IBM Plex Sans Arabic', system-ui, sans-serif",
         padding: "0",
       }}
     >

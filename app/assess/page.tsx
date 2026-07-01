@@ -66,8 +66,11 @@ export default function AssessPage() {
                     <span className="text-sm text-foreground">{b.domain}</span>
                     <span className="text-xs font-mono text-muted-foreground">{b.weight}%</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
-                    <div className="h-full rounded-full bg-primary" style={{ width: `${b.weight * 4}%` }} />
+                  <div className="progress-track h-2.5">
+                    <div
+                      className="progress-fill-gradient animate-pulse-glow"
+                      style={{ width: `${b.weight * 4}%`, "--pulse-color": "rgba(20,184,166,.5)" } as React.CSSProperties}
+                    />
                   </div>
                 </div>
               ))}

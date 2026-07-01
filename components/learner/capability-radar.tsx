@@ -31,11 +31,11 @@ interface CapabilityRadarProps {
   animate?: boolean
 }
 
-// Traffic-light scale (site-wide, by product decision — red/amber/green).
+// Blue→green scale — no red, no amber (site-wide product decision).
 function masteryColor(score: number): string {
   if (score >= 70) return "#22C55E" // green — strong
-  if (score >= 40) return "#F59E0B" // amber — mid
-  return "#EF4444" // red — needs attention
+  if (score >= 40) return "#14B8A6" // teal — mid
+  return "#3B82F6" // blue — needs focus
 }
 
 const INK = "#16242F"
@@ -142,8 +142,8 @@ export function CapabilityRadar({
       <defs>
         <linearGradient id="radarGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#22C55E" />
-          <stop offset="50%" stopColor="#F59E0B" />
-          <stop offset="100%" stopColor="#EF4444" />
+          <stop offset="50%" stopColor="#14B8A6" />
+          <stop offset="100%" stopColor="#3B82F6" />
         </linearGradient>
         <filter id="radarGlow" x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur stdDeviation="4" result="blur" />
@@ -196,7 +196,7 @@ export function CapabilityRadar({
               dominantBaseline="middle"
               fontSize={11}
               fill={INK}
-              fontFamily="'IBM Plex Sans Arabic', sans-serif"
+              fontFamily="'Zak', 'IBM Plex Sans Arabic', sans-serif"
               fontWeight={600}
             >
               {l.label}

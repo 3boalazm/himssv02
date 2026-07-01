@@ -3,7 +3,43 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── Thmanyah Serif Display — headings font (h1/h2/h3) ────────────────── */
+/* ─── Inter — English body font (Google Fonts) ──────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ─── Surgena — English heading font (Latin-only; Arabic headings fall
+ * back to Thmanyah Serif Display automatically via the font stack) ─── */
+@font-face {
+  font-family: "Surgena";
+  src: url("/fonts/surgenapersonaluseonlysembd-q2qwd.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Zak — Arabic body font ─────────────────────────────────────────── */
+@font-face {
+  font-family: "Zak";
+  src: url("/fonts/RH-Zak_Thin.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Zak";
+  src: url("/fonts/RH-Zak_Reg.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Zak";
+  src: url("/fonts/RH-Zak_Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 @font-face {
   font-family: "Thmanyah Serif Display";
   src: url("/fonts/thmanyahserifdisplay-Light.woff2") format("woff2");
@@ -219,7 +255,7 @@
   * { @apply border-border outline-ring/50; }
   body {
     @apply bg-background text-foreground;
-    font-family: system-ui, -apple-system, Tahoma, Arial, sans-serif;
+    font-family: "Inter", "Zak", "IBM Plex Sans Arabic", system-ui, sans-serif;
     direction: rtl;
     /* Gradient mesh backdrop — gives the global glassmorphism something
        to blur/refract against, instead of a flat color. */
@@ -236,7 +272,7 @@
       radial-gradient(ellipse 700px 500px at 50% 100%, rgba(74,222,128,0.08), transparent 55%);
   }
   h1, h2, h3 {
-    font-family: "Thmanyah Serif Display", "IBM Plex Sans Arabic", serif;
+    font-family: "Surgena", "Thmanyah Serif Display", "Zak", serif;
   }
 }
 
@@ -298,8 +334,7 @@
 /* ─── Glow — colored halo behind key numbers / active elements ─────────── */
 .glow-teal   { box-shadow: 0 0 24px rgba(15, 107, 107, 0.35), 0 0 4px rgba(15, 107, 107, 0.4); }
 .glow-green  { box-shadow: 0 0 24px rgba(34, 197, 94, 0.4),  0 0 4px rgba(34, 197, 94, 0.45); }
-.glow-amber  { box-shadow: 0 0 24px rgba(245, 158, 11, 0.4), 0 0 4px rgba(245, 158, 11, 0.45); }
-.glow-red    { box-shadow: 0 0 24px rgba(239, 68, 68, 0.4),  0 0 4px rgba(239, 68, 68, 0.45); }
+.glow-blue   { box-shadow: 0 0 24px rgba(59, 130, 246, 0.4), 0 0 4px rgba(59, 130, 246, 0.45); }
 
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 16px var(--pulse-color, rgba(15,107,107,.35)), 0 0 4px var(--pulse-color, rgba(15,107,107,.4)); }
@@ -307,22 +342,28 @@
 }
 .glow-pulse { animation: glowPulse 2.2s ease-in-out infinite; }
 
-/* ─── Traffic-light performance scale (site-wide, by product decision) ─── */
+/* ─── Blue→green performance scale (site-wide, by product decision) ────
+ * No red, no amber/orange — every bar and score uses this blue→green
+ * family exclusively.
+ * ────────────────────────────────────────────────────────────────────── */
 :root {
-  --tl-red: #EF4444;
-  --tl-amber: #F59E0B;
+  --tl-blue: #3B82F6;
+  --tl-teal: #14B8A6;
   --tl-green: #22C55E;
 }
 .dark {
-  --tl-red: #F87171;
-  --tl-amber: #FBBF24;
+  --tl-blue: #60A5FA;
+  --tl-teal: #2DD4BF;
   --tl-green: #4ADE80;
 }
 
 /* ─── Gradient + glow + bevel/emboss progress bars ──────────────────────
- * Track has an embossed inset (carved-in look); fill is a traffic-light
+ * Track has an embossed inset (carved-in look); fill is a blue→green
  * gradient with an outer glow and a subtle glass highlight sweep, plus
- * a soft continuous pulse so active bars read as "alive".
+ * a soft continuous pulse so active bars read as "alive". The gradient
+ * is sized to the fill's own box (not the full track), so every bar —
+ * whatever its width — shows the complete, correctly-proportioned
+ * blue-to-green sweep instead of a clipped slice of it.
  * ────────────────────────────────────────────────────────────────────── */
 .progress-track {
   position: relative;
@@ -340,8 +381,8 @@
   position: relative;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--tl-red) 0%, var(--tl-amber) 50%, var(--tl-green) 100%);
-  background-size: 300% 100%;
+  background: linear-gradient(90deg, var(--tl-blue) 0%, var(--tl-teal) 55%, var(--tl-green) 100%);
+  background-size: 100% 100%; /* always the full sweep, scaled to this bar's own width */
   /* Bevel/emboss: raised glassy highlight on top, shadow beneath */
   box-shadow:
     inset 0 1px 1px rgba(255,255,255,.55),

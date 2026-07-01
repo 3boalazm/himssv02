@@ -56,7 +56,7 @@ export default function PlayPage({ params }: { params: { id: string } }) {
       style={{
         minHeight: "100vh",
         background: "linear-gradient(180deg, #16242F 0%, #1E1B2E 100%)",
-        fontFamily: "'IBM Plex Sans Arabic', system-ui, sans-serif",
+        fontFamily: "'Zak', 'IBM Plex Sans Arabic', system-ui, sans-serif",
       }}
     >
       {/* Progress bar — glass-panel, thin */}
@@ -143,7 +143,7 @@ export default function PlayPage({ params }: { params: { id: string } }) {
               color: selected && !submitted ? "#fff" : "rgba(255,255,255,0.3)",
               border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600,
               cursor: selected && !submitted ? "pointer" : "not-allowed",
-              fontFamily: "'IBM Plex Sans Arabic', sans-serif",
+              fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif",
               transition: "background 150ms ease, color 150ms ease",
             }}
           >
@@ -152,7 +152,7 @@ export default function PlayPage({ params }: { params: { id: string } }) {
           {submitted && (
             <button
               onClick={() => router.push(`/scenarios/${params.id}/play`)}
-              style={{ height: 44, padding: "0 20px", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, fontSize: 13, cursor: "pointer", fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
+              style={{ height: 44, padding: "0 20px", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, fontSize: 13, cursor: "pointer", fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif" }}
             >
               الخطوة التالية ←
             </button>

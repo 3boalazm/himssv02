@@ -49,10 +49,15 @@ export default function AssessSessionPage() {
           </div>
         </div>
         {/* Progress */}
-        <div className="h-1 bg-secondary">
+        <div className="progress-track h-1.5 rounded-none">
           <div
-            className="h-full bg-primary transition-all"
-            style={{ width: `${(question.number / question.total) * 100}%` }}
+            className="progress-fill-gradient animate-pulse-glow"
+            style={
+              {
+                width: `${(question.number / question.total) * 100}%`,
+                "--pulse-color": "rgba(20,184,166,.5)",
+              } as React.CSSProperties
+            }
           />
         </div>
       </header>
