@@ -52,7 +52,7 @@ export default function LearnerDashboardPage() {
         </div>
 
         {/* Next-best-action hero — the single most important element */}
-        <Card className="p-6 mb-6 border-primary/30 bg-primary/5">
+        <Card className="p-6 mb-6 border-primary/30 bg-primary/5 animate-in-up">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
               <Target className="w-6 h-6 text-white" />
@@ -76,7 +76,7 @@ export default function LearnerDashboardPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Readiness score + sparkline */}
-          <Card className="p-6">
+          <Card className="p-6 animate-in-up stagger-1 card-interactive">
             <p className="text-xs text-muted-foreground mb-1">الجاهزية الحالية</p>
             <div className="flex items-end justify-between">
               <span className="text-4xl font-bold text-primary font-mono">{overall}%</span>
@@ -98,7 +98,7 @@ export default function LearnerDashboardPage() {
           </Card>
 
           {/* Mini matrix — same CapabilityRadar component, no labels */}
-          <Card className="p-6 flex flex-col items-center justify-center">
+          <Card className="p-6 flex flex-col items-center justify-center animate-in-up stagger-2 card-interactive">
             <p className="text-xs text-muted-foreground mb-2 self-start">مصفوفة الجاهزية</p>
             <CapabilityRadar domains={domains} size={150} showLabels={false} />
             <Link
@@ -111,7 +111,7 @@ export default function LearnerDashboardPage() {
           </Card>
 
           {/* Path progress ring */}
-          <Card className="p-6">
+          <Card className="p-6 animate-in-up stagger-3 card-interactive">
             <p className="text-xs text-muted-foreground mb-3">مسار الجاهزية</p>
             <div className="flex items-center justify-center">
               <div className="relative w-28 h-28">

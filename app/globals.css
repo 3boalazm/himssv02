@@ -91,33 +91,49 @@
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #e2e8f0;
-  --card: #1e293b;
-  --card-foreground: #e2e8f0;
-  --popover: #2d3d52;
-  --popover-foreground: #e2e8f0;
-  --primary: #0F6B6B;
-  --primary-foreground: #ffffff;
-  --secondary: #263245;
-  --secondary-foreground: #e2e8f0;
-  --muted: #263245;
-  --muted-foreground: #94a3b8;
-  --accent: #0F6B6B;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  /* ─── DARK MODE — warm ink-based, matches HLOS identity ────────────────
+   * Deep warm ink surfaces (not cold slate). Teal brightened for contrast.
+   * Amber preserved for gaps. Same "clinical instrument" calm, darkened.
+   * ───────────────────────────────────────────────────────────────────── */
+  --background: #0F1A21;
+  --foreground: #E8EAEC;
+  --card: #16242F;
+  --card-foreground: #E8EAEC;
+  --popover: #1B2E3A;
+  --popover-foreground: #E8EAEC;
+  --primary: #2A9D8F;
+  --primary-foreground: #06171A;
+  --secondary: #1E3038;
+  --secondary-foreground: #E8EAEC;
+  --muted: #1E3038;
+  --muted-foreground: #93A4AD;
+  --accent: #2A9D8F;
+  --accent-foreground: #06171A;
+  --destructive: #E05252;
   --destructive-foreground: #ffffff;
-  --border: #334155;
-  --input: #334155;
-  --ring: #0F6B6B;
-  --sidebar: #1e293b;
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #0F6B6B;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #263245;
-  --sidebar-accent-foreground: #e2e8f0;
-  --sidebar-border: #334155;
-  --sidebar-ring: #0F6B6B;
+  --border: #263B44;
+  --input: #263B44;
+  --ring: #2A9D8F;
+  --success: #2A9D8F;
+  --success-bg: rgba(42,157,143,0.14);
+  --warning: #D98A2B;
+  --warning-bg: rgba(217,138,43,0.14);
+  --danger: #E05252;
+  --danger-fg: #ffffff;
+  --danger-bg: rgba(224,82,82,0.12);
+  --chart-1: #2A9D8F;
+  --chart-2: #4FB3A3;
+  --chart-3: #D9A441;
+  --chart-4: #D98A2B;
+  --chart-5: #93A4AD;
+  --sidebar: #16242F;
+  --sidebar-foreground: #E8EAEC;
+  --sidebar-primary: #2A9D8F;
+  --sidebar-primary-foreground: #06171A;
+  --sidebar-accent: #1E3038;
+  --sidebar-accent-foreground: #E8EAEC;
+  --sidebar-border: #263B44;
+  --sidebar-ring: #2A9D8F;
 }
 
 @theme inline {
@@ -244,4 +260,70 @@
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * LIFE LAYER — soft depth + entrance motion + richer interaction
+ * Refined, not decorative. Keeps the clinical-instrument calm but breathing.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* Soft elevation on cards — subtle depth, theme-aware */
+[data-slot="card"] {
+  box-shadow: 0 1px 2px rgba(22, 36, 47, 0.04), 0 1px 3px rgba(22, 36, 47, 0.03);
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+.dark [data-slot="card"] {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Interactive cards lift gently on hover */
+[data-slot="card"].group\/interactive:hover,
+.card-interactive:hover {
+  box-shadow: 0 4px 12px rgba(22, 36, 47, 0.08), 0 2px 4px rgba(22, 36, 47, 0.04);
+  transform: translateY(-2px);
+}
+.dark .card-interactive:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons — subtle press feedback + smoother transitions */
+button:not(:disabled) {
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+              box-shadow 0.2s ease, transform 0.12s ease, opacity 0.2s ease;
+}
+button:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* Entrance: staggered fade-up for page content */
+@keyframes lifeFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-in-up {
+  animation: lifeFadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.30s; }
+
+/* Progress/score bars animate their fill on mount */
+@keyframes barGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.animate-bar {
+  transform-origin: right; /* RTL: grow from the right */
+  animation: barGrow 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-in-up, .animate-bar, [data-slot="card"] {
+    animation: none !important;
+    transition: none !important;
+  }
 }

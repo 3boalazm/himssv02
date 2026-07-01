@@ -1,4 +1,5 @@
 import { CapabilityRadar, type RadarDomain } from "@/components/learner/capability-radar"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Target, TrendingUp, Award, ArrowLeft } from "lucide-react"
@@ -36,6 +37,7 @@ function PublicNav() {
           <Link href="/pricing" className="hover:text-foreground transition-colors">الأسعار</Link>
         </nav>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Link href="/dashboard">
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
               ابدأ مجاناً

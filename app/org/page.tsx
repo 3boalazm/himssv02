@@ -59,7 +59,7 @@ export default function OrgDashboardPage() {
         </div>
 
         {/* Alert bar */}
-        <Card className="p-3 mb-5 bg-[#B45309]/5 border-[#B45309]/20 flex items-center justify-between">
+        <Card className="p-3 mb-5 animate-in-up bg-[#B45309]/5 border-[#B45309]/20 flex items-center justify-between">
           <span className="flex items-center gap-2 text-sm text-[#B45309]">
             <AlertTriangle className="w-4 h-4" />
             ٨ أعضاء لم يبدأوا التقييم بعد

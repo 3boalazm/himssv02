@@ -1,4 +1,5 @@
 "use client"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -20,11 +21,14 @@ function PublicNav() {
           <Link href="/capabilities" className="text-foreground">التصنيف</Link>
           <Link href="/pricing" className="hover:text-foreground transition-colors">الأسعار</Link>
         </nav>
-        <Link href="/dashboard">
-          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-            ابدأ مجاناً
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link href="/dashboard">
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+              ابدأ مجاناً
+            </Button>
+          </Link>
+        </div>
       </div>
     </header>
   )

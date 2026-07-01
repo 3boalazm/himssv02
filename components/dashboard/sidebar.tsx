@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 // ─── Default nav for org variant ──────────────────────────────────────────────
 const defaultOrgMenu: NavItem[] = [
@@ -104,7 +105,7 @@ export function Sidebar({ variant = "org", menuItems }: SidebarProps) {
         <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
           <span className="text-white font-bold text-sm">H</span>
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-foreground truncate">
             {isAdmin ? "HLOS" : isLearner ? "أحمد بدير" : "مستشفى الملك فهد"}
           </p>
@@ -113,6 +114,7 @@ export function Sidebar({ variant = "org", menuItems }: SidebarProps) {
             {isAdmin ? "لوحة الإدارة" : isLearner ? "ممارس متقدم" : "org_admin · 36 / 50 seat"}
           </p>
         </div>
+        <ThemeToggle className="flex-shrink-0" />
       </div>
 
       {/* Main nav */}

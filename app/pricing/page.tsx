@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Card } from "@/components/ui/card"
 import { Check, Lock, ArrowLeft } from "lucide-react"
 import Link from "next/link"
@@ -17,11 +18,14 @@ function PublicNav() {
           <Link href="/capabilities" className="hover:text-foreground transition-colors">التصنيف</Link>
           <Link href="/pricing" className="text-foreground">الأسعار</Link>
         </nav>
-        <Link href="/dashboard">
-          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-            ابدأ مجاناً
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link href="/dashboard">
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+              ابدأ مجاناً
+            </Button>
+          </Link>
+        </div>
       </div>
     </header>
   )
