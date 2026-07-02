@@ -2,7 +2,7 @@
 
 /**
  * Briefing — data-driven from lib/scenarios (BRIEFINGS + SCENARIOS by id).
- *  · unknown id            → notFound()
+ *  · unknown id            → redirect to /scenarios
  *  · locked (s.free=false) → CTA becomes "متاح في Pro — ترقية" → /pricing
  *  · playable + session in progress → CTA "متابعة من الخطوة N"
  *  · playable + no session          → CTA "بدء السيناريو"
@@ -11,7 +11,6 @@
 
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
-import { notFound } from "next/navigation"
 import { ArrowRight, Lock } from "lucide-react"
 import { getScenario, BRIEFINGS, PLAYABLE_ID, loadSession, type PlaySession } from "@/lib/scenarios"
 
@@ -27,7 +26,13 @@ export default function BriefingPage() {
     if (id === PLAYABLE_ID) setSession(loadSession(PLAYABLE_ID))
   }, [id])
 
-  if (!scenario || !briefing) notFound()
+  // Unknown / malformed id (e.g. a stale /scenarios/1/... link) → send the
+  // visitor back to the catalog rather than a dead-end 404.
+  useEffect(() => {
+    if (!scenario || !briefing) router.replace("/scenarios")
+  }, [scenario, briefing, router])
+
+  if (!scenario || !briefing) return null
 
   const isPlayable = scenario.id === PLAYABLE_ID
   const hasSession = isPlayable && session && !session.completed

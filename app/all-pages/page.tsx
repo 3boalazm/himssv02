@@ -83,8 +83,9 @@ const groups: RouteGroup[] = [
     color: "#7F77DD",
     routes: [
       { label: "كتالوج السيناريوهات", href: "/scenarios" },
-      { label: "الإحاطة (Briefing)", href: "/scenarios/1/briefing" },
-      { label: "تشغيل السيناريو", href: "/scenarios/1/play" },
+      { label: "الإحاطة (Briefing)", href: "/scenarios/emr-outage/briefing" },
+      { label: "تشغيل السيناريو", href: "/scenarios/emr-outage/play" },
+      { label: "ملخص السيناريو", href: "/scenarios/emr-outage/summary" },
     ],
   },
 ]
