@@ -32,7 +32,7 @@ export default function AdminContentPage() {
     <div className="flex min-h-screen bg-background">
       <Sidebar variant="admin" />
 
-      <main className="flex-1 p-4 lg:p-5 lg:mr-52">
+      <main className="flex-1 min-w-0 p-4 lg:p-5 lg:mr-52">
         <div className="flex items-center justify-between mb-5">
           <div>
             <h1 className="text-xl font-bold text-foreground">إدارة المحتوى</h1>

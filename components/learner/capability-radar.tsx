@@ -55,7 +55,7 @@ function iconFor(label: string): LucideIcon {
   return RefreshCcw // change management / fallback
 }
 
-const INK = "#16242F"
+const INK = "var(--foreground)"
 
 export function CapabilityRadar({
   domains,
@@ -136,8 +136,9 @@ export function CapabilityRadar({
           key={`ring-${i}`}
           points={g.points}
           fill="none"
-          stroke="rgba(22,36,47,.15)"
-          strokeWidth={0.8}
+          stroke="var(--muted-foreground)"
+          strokeOpacity={0.6}
+          strokeWidth={1}
           strokeDasharray={g.dash}
         />
       ))}
@@ -150,8 +151,9 @@ export function CapabilityRadar({
           y1={cy}
           x2={ax.x2}
           y2={ax.y2}
-          stroke="rgba(22,36,47,.08)"
-          strokeWidth={1}
+          stroke="var(--muted-foreground)"
+          strokeOpacity={0.45}
+          strokeWidth={0.8}
         />
       ))}
 

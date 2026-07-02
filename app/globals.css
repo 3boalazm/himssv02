@@ -316,8 +316,8 @@
   box-shadow: 0 12px 40px rgba(15, 107, 107, 0.12);
 }
 .dark .glass-panel-elevated {
-  background: rgba(22, 36, 47, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(22, 36, 47, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
 }
 @supports (backdrop-filter: blur()) {

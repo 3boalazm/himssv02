@@ -47,15 +47,27 @@ export default function UserSettingsPage() {
     <div className="flex min-h-screen bg-background" dir="rtl">
       <Sidebar variant="learner" />
 
-      <main className="flex-1 p-6 lg:mr-56 max-w-5xl">
+      <main className="flex-1 min-w-0 p-6 lg:mr-56 max-w-5xl">
         <div className="mb-6">
           <h1 className="text-lg font-bold text-foreground">إعدادات الحساب</h1>
           <p className="text-sm text-muted-foreground mt-1">أحمد البديري · ahmed.bedeer@kfh.sa</p>
         </div>
 
+        {/* Mobile tab bar (< lg) — horizontal scroll */}
+        <nav className="flex lg:hidden gap-1.5 overflow-x-auto pb-2 mb-4 -mx-1 px-1 min-w-0" aria-label="تبويبات الإعدادات">
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={cn("flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs whitespace-nowrap flex-shrink-0 transition-colors duration-150",
+                tab === t.id ? "bg-primary/15 text-primary font-medium" : "text-muted-foreground bg-secondary/40")}>
+              <t.icon className="w-3.5 h-3.5 flex-shrink-0" />
+              {t.label}
+            </button>
+          ))}
+        </nav>
+
         <div className="flex gap-6">
-          {/* Tab sidebar (right in RTL) */}
-          <aside className="w-48 flex-shrink-0">
+          {/* Tab sidebar (right in RTL) — desktop only */}
+          <aside className="hidden lg:block w-48 flex-shrink-0">
             <nav className="flex flex-col gap-0.5 bg-card border border-border rounded-xl p-2">
               {TABS.map(t => (
                 <button key={t.id} onClick={() => setTab(t.id)}

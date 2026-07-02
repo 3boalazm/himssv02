@@ -17,8 +17,8 @@ export default function ReportsPage() {
       {/* Generous spacing — F.6 executive report style, not admin density */}
       <main className="flex-1 p-4 lg:p-8 lg:mr-56">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-start justify-between mb-2">
-            <div>
+          <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
+            <div className="min-w-0">
               <h1 className="text-2xl font-bold text-foreground">خزنة الأدلة المهنية</h1>
               <p className="text-sm text-muted-foreground mt-1">
                 التقارير المعتمدة هنا توثّق مسارك المهني — توثيق موضوعي لإثبات التطوير
@@ -35,17 +35,17 @@ export default function ReportsPage() {
           <div className="mt-8 space-y-4">
             {reports.map((r, i) => (
               <Card key={i} className="p-6 hover:bg-secondary/20 transition-colors">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-4">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div className="flex items-start gap-4 min-w-0 flex-1">
                     <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <FileText className="w-5 h-5 text-primary" />
                     </div>
-                    <div>
-                      <h3 className="text-base font-semibold text-foreground" dir={r.lang === "English" ? "ltr" : "rtl"}>
+                    <div className="min-w-0">
+                      <h3 className="text-base font-semibold text-foreground truncate" dir={r.lang === "English" ? "ltr" : "rtl"}>
                         {r.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground mt-0.5">{r.ref}</p>
-                      <div className="flex items-center gap-3 mt-2 text-[11px] text-muted-foreground">
+                      <p className="text-sm text-muted-foreground mt-0.5 truncate">{r.ref}</p>
+                      <div className="flex items-center gap-3 mt-2 text-[11px] text-muted-foreground flex-wrap">
                         <span className="font-mono">{r.date}</span>
                         <span>·</span>
                         <span>{r.lang}</span>

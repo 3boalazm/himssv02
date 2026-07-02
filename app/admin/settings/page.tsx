@@ -30,7 +30,7 @@ export default function AdminSettingsPage() {
     <div className="flex min-h-screen bg-background" dir="rtl">
       <Sidebar variant="admin" />
 
-      <main className="flex-1 p-6 lg:mr-52 max-w-5xl">
+      <main className="flex-1 min-w-0 p-6 lg:mr-52 max-w-5xl">
         <div className="inline-flex items-center gap-2 bg-secondary border border-border rounded-full px-3 py-1.5 mb-4">
           <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
           <span className="text-xs font-medium text-muted-foreground">أنت تعرض هذه الصفحة بوصفك: مدير المنصة (super_admin)</span>
@@ -41,8 +41,20 @@ export default function AdminSettingsPage() {
           <p className="text-sm text-muted-foreground mt-1">إعدادات النظام العامة · HLOS Platform</p>
         </div>
 
+        {/* Mobile tab bar (< lg) — horizontal scroll */}
+        <nav className="flex lg:hidden gap-1.5 overflow-x-auto pb-2 mb-4 -mx-1 px-1 min-w-0" aria-label="تبويبات الإعدادات">
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={cn("flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs whitespace-nowrap flex-shrink-0 transition-colors duration-150",
+                tab === t.id ? "bg-primary/15 text-primary font-medium" : "text-muted-foreground bg-secondary/40")}>
+              <t.icon className="w-3 h-3 flex-shrink-0" />
+              {t.label}
+            </button>
+          ))}
+        </nav>
+
         <div className="flex gap-6">
-          <aside className="w-52 flex-shrink-0">
+          <aside className="hidden lg:block w-52 flex-shrink-0">
             <nav className="flex flex-col gap-0.5 bg-card border border-border rounded-xl p-2">
               {TABS.map(t => (
                 <button key={t.id} onClick={() => setTab(t.id)}
@@ -65,15 +77,15 @@ export default function AdminSettingsPage() {
                     { name: "Moyasar", status: "نشط", hint: "SK_TEST_..." },
                     { name: "Tap Payments", status: "معطّل", hint: "sk_live_..." },
                   ].map(p => (
-                    <div key={p.name} className="flex items-center justify-between py-4 border-b border-border last:border-0">
-                      <div>
+                    <div key={p.name} className="flex items-center justify-between gap-3 flex-wrap py-4 border-b border-border last:border-0">
+                      <div className="min-w-0 flex-1">
                         <p className="text-sm font-semibold text-foreground font-mono">{p.name}</p>
-                        <div className="flex items-center gap-2 mt-1.5">
-                          <Input defaultValue={p.hint} dir="ltr" className="h-7 text-xs w-52 font-mono" />
+                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                          <Input defaultValue={p.hint} dir="ltr" className="h-7 text-xs w-full max-w-52 min-w-0 font-mono" />
                           <Button variant="outline" size="sm" className="h-7 text-xs">تحديث</Button>
                         </div>
                       </div>
-                      <span className={cn("text-[10px] font-bold px-2.5 py-1 rounded-full", p.status === "نشط" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground")}>{p.status}</span>
+                      <span className={cn("text-[10px] font-bold px-2.5 py-1 rounded-full flex-shrink-0", p.status === "نشط" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground")}>{p.status}</span>
                     </div>
                   ))}
                   <p className="text-xs text-muted-foreground mt-3">⚠ مفاتيح الـ API الحقيقية تُضاف عبر environment variables فقط — لا تُحفظ في قاعدة البيانات.</p>

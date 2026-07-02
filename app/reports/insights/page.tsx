@@ -10,7 +10,7 @@ export default function InsightsPage() {
     <div className="flex min-h-screen bg-background">
       <Sidebar variant="org" />
 
-      <main className="flex-1 p-4 lg:p-6 lg:mr-56">
+      <main className="flex-1 min-w-0 p-4 lg:p-6 lg:mr-56">
         <Header
           title="لوحة التقارير التحليلية"
           description="أداء الفريق والاتجاهات عبر مجالات الجاهزية."

@@ -87,10 +87,10 @@ export function ReportBuilder() {
       {/* Date range */}
       <section>
         <label className={label}>النطاق الزمني</label>
-        <div className="flex gap-2 mb-3">
-          <input type="date" defaultValue="2026-06-01" className={inputClass} dir="ltr" style={{ textAlign: "right" }} />
+        <div className="flex gap-2 mb-3 flex-wrap sm:flex-nowrap">
+          <input type="date" defaultValue="2026-06-01" className={`${inputClass} min-w-0`} dir="ltr" style={{ textAlign: "right" }} />
           <span className="flex items-center text-muted-foreground">→</span>
-          <input type="date" defaultValue="2026-06-30" className={inputClass} dir="ltr" style={{ textAlign: "right" }} />
+          <input type="date" defaultValue="2026-06-30" className={`${inputClass} min-w-0`} dir="ltr" style={{ textAlign: "right" }} />
         </div>
         <div className="flex gap-2 flex-wrap">
           {["اليوم", "هذا الأسبوع", "هذا الشهر", "الربع الأخير"].map((r) => (

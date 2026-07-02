@@ -10,20 +10,22 @@
  */
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { notFound } from "next/navigation"
 import { ArrowRight, Lock } from "lucide-react"
 import { getScenario, BRIEFINGS, PLAYABLE_ID, loadSession, type PlaySession } from "@/lib/scenarios"
 
-export default function BriefingPage({ params }: { params: { id: string } }) {
+export default function BriefingPage() {
   const router = useRouter()
-  const scenario = getScenario(params.id)
-  const briefing = BRIEFINGS[params.id]
+  const params = useParams()
+  const id = params.id as string
+  const scenario = getScenario(id)
+  const briefing = BRIEFINGS[id]
   const [session, setSession] = useState<PlaySession | null>(null)
 
   useEffect(() => {
-    if (params.id === PLAYABLE_ID) setSession(loadSession(PLAYABLE_ID))
-  }, [params.id])
+    if (id === PLAYABLE_ID) setSession(loadSession(PLAYABLE_ID))
+  }, [id])
 
   if (!scenario || !briefing) notFound()
 

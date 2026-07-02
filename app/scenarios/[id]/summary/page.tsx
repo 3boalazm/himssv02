@@ -11,7 +11,7 @@
  */
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { CheckCircle2, RotateCcw, ArrowLeft } from "lucide-react"
 import {
   PLAYABLE_ID, EMR_STEPS, loadSession, clearSession, computeResults, scoreLabel,
@@ -25,18 +25,20 @@ const QUALITY_BADGE: Record<StepResult["quality"], { label: string; bg: string; 
   timeout:    { label: "انتهى الوقت",        bg: "rgba(255,255,255,0.08)", fg: "rgba(255,255,255,0.55)", border: "rgba(255,255,255,0.15)" },
 }
 
-export default function SummaryPage({ params }: { params: { id: string } }) {
+export default function SummaryPage() {
   const router = useRouter()
+  const params = useParams()
+  const id = params.id as string
   const [session, setSession] = useState<PlaySession | null | undefined>(undefined)
 
   useEffect(() => {
     const s = loadSession(PLAYABLE_ID)
     if (!s || s.answers.length === 0) {
-      router.replace(`/scenarios/${params.id}/briefing`)
+      router.replace(`/scenarios/${id}/briefing`)
       return
     }
     setSession(s)
-  }, [params.id, router])
+  }, [id, router])
 
   if (session === undefined || !session) return null
 

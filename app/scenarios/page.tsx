@@ -1,26 +1,32 @@
 "use client"
 
 /**
- * Scenario catalog — dark zone (F.5).
- * v2: live search + difficulty/domain/status filters, resume hero for an
- * in-progress run, and card states (free / Pro-locked / in-progress with
- * progress bar / completed) — all driven by lib/scenarios + the play
- * session in sessionStorage, so "قيد التقدم %N" here is the real run.
+ * Scenario catalog — restyled to the core HLOS identity (Sidebar + light
+ * tokens + Card), per product decision: /scenarios is a learner page like
+ * any other, not a separate dark zone. The immersive dark treatment stays
+ * inside the run itself (briefing/play/summary).
+ * Logic unchanged: live search + difficulty/domain/status filters, resume
+ * hero, card states (free / Pro-locked / in-progress / completed) driven by
+ * lib/scenarios + sessionStorage.
  */
 
 import { useEffect, useMemo, useState } from "react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Lock, Search, Play, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Sidebar } from "@/components/dashboard/sidebar"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import {
   SCENARIOS, DIFFICULTIES, DOMAINS, STATUSES, PLAYABLE_ID,
   loadSession, sessionStatus, progressPct,
   type PlaySession, type PlayStatus,
 } from "@/lib/scenarios"
 
+/* Difficulty accents on the site palette — no red anywhere (locked rule):
+   easy = teal, medium = blue, hard = amber (challenge, not failure). */
 const diffColor = (d: string) =>
-  d === "سهل" ? "rgba(79,179,163,0.9)" : d === "متوسط" ? "rgba(217,138,43,0.9)" : "rgba(224,120,120,0.9)"
+  d === "سهل" ? "#14B8A6" : d === "متوسط" ? "#3B82F6" : "#B45309"
 
 type Filter<T> = "الكل" | T
 
@@ -29,9 +35,9 @@ function FilterRow<T extends string>({
 }: { label: string; options: readonly T[]; value: Filter<T>; onChange: (v: Filter<T>) => void }) {
   const all: Filter<T>[] = ["الكل", ...options]
   return (
-    <div className="flex items-center gap-3">
-      <span className="w-14 shrink-0 text-[11px] font-mono text-white/40">{label}</span>
-      <div className="flex flex-wrap gap-2">
+    <div className="flex items-start gap-3">
+      <span className="w-14 shrink-0 pt-1.5 text-[11px] text-muted-foreground">{label}</span>
+      <div className="flex flex-wrap gap-2 min-w-0">
         {all.map(opt => (
           <button
             key={opt}
@@ -39,8 +45,8 @@ function FilterRow<T extends string>({
             className={cn(
               "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors duration-150",
               value === opt
-                ? "border-white/25 bg-[#0D1620]/90 text-white/95"
-                : "border-white/10 bg-white/[0.05] text-white/55 hover:text-white/85 hover:border-white/20",
+                ? "border-primary bg-primary/10 text-foreground"
+                : "border-border text-muted-foreground hover:bg-secondary/40 hover:text-foreground",
             )}
           >
             {opt}
@@ -80,61 +86,53 @@ export default function ScenariosPage() {
   const resumePct = progressPct(session, SCENARIOS.find(s => s.id === PLAYABLE_ID)!.steps)
 
   return (
-    <div
-      dir="rtl"
-      className="min-h-screen"
-      style={{
-        background: "linear-gradient(180deg, #16242F 0%, #1E1B2E 100%)",
-        fontFamily: "'Zak', 'IBM Plex Sans Arabic', system-ui, sans-serif",
-      }}
-    >
-      {/* Hero */}
-      <div className="mx-auto max-w-[1060px] px-6 pt-12 pb-8 sm:px-8">
-        <p className="mb-3.5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-[rgba(127,119,221,0.75)]">
-          <Link href="/dashboard" className="transition-colors hover:text-[rgba(127,119,221,1)]" title="العودة للوحتي">HLOS</Link>
-          {" · وضع السيناريوهات"}
-        </p>
-        <h1 className="mb-3 text-[28px] font-bold leading-[1.2] tracking-[-0.5px] text-white/90 sm:text-[34px]">
-          سيناريوهات هندسة تقنية المعلومات الصحية
-        </h1>
-        <p className="max-w-[540px] text-base leading-[1.75] text-white/[0.68]">
-          قرارات حقيقية في مواقف مستشفياتنا — كل سيناريو يقيس استجابتك في ضغط وقت حقيقي.
-        </p>
-      </div>
+    <div className="flex min-h-screen bg-background">
+      <Sidebar variant="learner" />
 
-      <div className="mx-auto max-w-[1060px] px-6 pb-16 sm:px-8">
+      <main className="flex-1 min-w-0 p-4 lg:p-6 lg:mr-56">
+        {/* Page heading */}
+        <div className="mb-6">
+          <p className="text-xs text-primary font-medium mb-1.5">وضع السيناريوهات</p>
+          <h1 className="text-2xl font-bold text-foreground mb-2">
+            سيناريوهات هندسة تقنية المعلومات الصحية
+          </h1>
+          <p className="max-w-[540px] text-sm text-foreground/70 leading-relaxed">
+            قرارات حقيقية في مواقف مستشفياتنا — كل سيناريو يقيس استجابتك في ضغط وقت حقيقي.
+          </p>
+        </div>
+
         {/* Resume hero — appears only when a run is actually in progress */}
         {inProgress && (
-          <div className="glass-panel-elevated animate-in-up mb-5 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <Card className="animate-in-up mb-5 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 border-primary/30">
             <div className="min-w-0">
-              <p className="mb-1 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-[rgba(127,119,221,0.75)]">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.1em] text-primary">
                 سيناريو غير مكتمل
               </p>
-              <p className="truncate text-[15px] font-bold text-white/90">
+              <p className="truncate text-[15px] font-bold text-foreground">
                 {inProgress.title}
-                <span className="mr-2 font-mono text-xs font-normal text-white/45">· {resumePct}% مكتمل</span>
+                <span className="mr-2 font-mono text-xs font-normal text-muted-foreground">· {resumePct}% مكتمل</span>
               </p>
             </div>
-            <button
+            <Button
               onClick={() => router.push(`/scenarios/${PLAYABLE_ID}/play`)}
-              className="flex shrink-0 items-center gap-2 rounded-[11px] bg-[#0F6B6B] px-6 py-2.5 text-sm font-bold text-white shadow-[0_4px_18px_rgba(15,107,107,0.45)] transition-colors hover:bg-[#0d5f5f]"
+              className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
             >
-              <Play className="h-4 w-4" />
+              <Play className="h-4 w-4 ml-1.5" />
               استئناف
-            </button>
-          </div>
+            </Button>
+          </Card>
         )}
 
         {/* Search */}
-        <div className="glass-panel mb-4 flex items-center gap-3 rounded-xl px-4 py-3">
+        <Card className="mb-4 flex flex-row items-center gap-3 rounded-xl px-4 py-3">
+          <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
             value={q}
             onChange={e => setQ(e.target.value)}
             placeholder="ابحث بالعنوان أو المجال أو الدور..."
-            className="min-w-0 flex-1 bg-transparent text-sm text-white/90 outline-none placeholder:text-white/35"
+            className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
           />
-          <Search className="h-4 w-4 shrink-0 text-white/35" />
-        </div>
+        </Card>
 
         {/* Filters */}
         <div className="mb-7 space-y-2.5">
@@ -145,37 +143,42 @@ export default function ScenariosPage() {
 
         {/* Grid */}
         {filtered.length === 0 ? (
-          <div className="glass-panel px-6 py-14 text-center">
-            <p className="mb-3 text-sm text-white/60">لا سيناريوهات تطابق هذه التصفية.</p>
-            <button
-              onClick={() => { setQ(""); setDiff("الكل"); setDom("الكل"); setStatus("الكل") }}
-              className="rounded-full border border-white/15 px-4 py-1.5 text-xs text-white/70 transition-colors hover:border-white/30 hover:text-white"
-            >
-              مسح التصفية
-            </button>
-          </div>
+          <Card className="px-6 py-14 text-center">
+            <p className="mb-3 text-sm text-muted-foreground">لا سيناريوهات تطابق هذه التصفية.</p>
+            <div>
+              <button
+                onClick={() => { setQ(""); setDiff("الكل"); setDom("الكل"); setStatus("الكل") }}
+                className="rounded-full border border-border px-4 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
+              >
+                مسح التصفية
+              </button>
+            </div>
+          </Card>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {filtered.map((s, i) => {
               const st = statusOf(s.id)
               const pct = s.id === PLAYABLE_ID ? progressPct(session, s.steps) : 0
               return (
-                <button
+                <Card
                   key={s.id}
                   onClick={() => router.push(`/scenarios/${s.id}/briefing`)}
+                  role="link"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); router.push(`/scenarios/${s.id}/briefing`) } }}
                   className={cn(
-                    "animate-in-up relative cursor-pointer p-5 text-right",
-                    s.free ? "glass-panel-elevated" : "glass-panel",
+                    "animate-in-up relative cursor-pointer p-5 text-right transition-colors hover:bg-secondary/20",
+                    s.free && "border-primary/30",
                   )}
                   style={{ animationDelay: `${i * 60}ms` }}
                 >
                   {/* Top-start badge: free / lock */}
                   {s.free ? (
-                    <span className="absolute left-3.5 top-3.5 rounded-full bg-[#0F6B6B] px-2.5 py-[3px] text-[9px] font-bold tracking-[0.06em] text-white">
+                    <span className="absolute left-3.5 top-3.5 rounded-full bg-primary px-2.5 py-[3px] text-[9px] font-bold tracking-[0.06em] text-primary-foreground">
                       مجاني — جرّب الآن
                     </span>
                   ) : (
-                    <span className="absolute left-3.5 top-3.5 flex items-center gap-1 text-[10px] text-white/35">
+                    <span className="absolute left-3.5 top-3.5 flex items-center gap-1 text-[10px] text-muted-foreground">
                       <Lock className="h-2.5 w-2.5" />
                       متاح في Pro
                     </span>
@@ -183,47 +186,47 @@ export default function ScenariosPage() {
 
                   {/* Top-end status */}
                   {st === "قيد التقدم" && (
-                    <span className="absolute right-3.5 top-3.5 font-mono text-[10px] font-bold text-[#D98A2B]">
+                    <span className="absolute right-3.5 top-3.5 font-mono text-[10px] font-bold text-[#B45309]">
                       قيد التقدم %{pct}
                     </span>
                   )}
                   {st === "مكتمل" && (
-                    <span className="absolute right-3.5 top-3.5 flex items-center gap-1 text-[10px] font-bold text-[#4FB3A3]">
+                    <span className="absolute right-3.5 top-3.5 flex items-center gap-1 text-[10px] font-bold text-[#22C55E]">
                       <CheckCircle2 className="h-3 w-3" />
                       مكتمل
                     </span>
                   )}
 
                   <div className="mb-3 mt-7">
-                    <h3 className="mb-1.5 text-[15px] font-bold leading-[1.35] text-white/90">{s.title}</h3>
-                    <p className="mb-0.5 text-xs text-white/[0.68]">دورك: {s.role}</p>
-                    <p className="font-mono text-[11px] text-white/45">{s.setting}</p>
+                    <h3 className="mb-1.5 text-[15px] font-bold leading-[1.35] text-foreground">{s.title}</h3>
+                    <p className="mb-0.5 text-xs text-foreground/70">دورك: {s.role}</p>
+                    <p className="font-mono text-[11px] text-muted-foreground">{s.setting}</p>
                   </div>
 
                   {/* In-progress bar */}
                   {st === "قيد التقدم" && (
-                    <div className="mb-3 h-1 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full rounded-full bg-[#D98A2B]" style={{ width: `${pct}%` }} />
+                    <div className="mb-3 h-1 overflow-hidden rounded-full bg-secondary">
+                      <div className="h-full rounded-full bg-[#B45309]" style={{ width: `${pct}%` }} />
                     </div>
                   )}
 
                   <div className="flex flex-wrap gap-1.5">
-                    <span className="rounded-full bg-white/[0.08] px-2.5 py-[3px] text-[10px] font-bold" style={{ color: diffColor(s.difficulty) }}>
+                    <span className="rounded-full bg-secondary px-2.5 py-[3px] text-[10px] font-bold" style={{ color: diffColor(s.difficulty) }}>
                       {s.difficulty}
                     </span>
-                    <span className="rounded-full bg-white/[0.08] px-2.5 py-[3px] font-mono text-[10px] text-white/60">
+                    <span className="rounded-full bg-secondary px-2.5 py-[3px] font-mono text-[10px] text-muted-foreground">
                       {s.durationMin} د
                     </span>
-                    <span className="rounded-full bg-white/[0.08] px-2.5 py-[3px] text-[10px] text-white/55">
+                    <span className="rounded-full bg-secondary px-2.5 py-[3px] text-[10px] text-muted-foreground">
                       {s.domain}
                     </span>
                   </div>
-                </button>
+                </Card>
               )
             })}
           </div>
         )}
-      </div>
+      </main>
     </div>
   )
 }

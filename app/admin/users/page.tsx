@@ -28,7 +28,7 @@ export default function AdminUsersPage() {
     <div className="flex min-h-screen bg-background">
       <Sidebar variant="admin" />
 
-      <main className="flex-1 p-4 lg:p-5 lg:mr-52">
+      <main className="flex-1 min-w-0 p-4 lg:p-5 lg:mr-52">
         <div className="mb-5">
           <h1 className="text-xl font-bold text-foreground">إدارة المستخدمين</h1>
           <p className="text-xs text-muted-foreground mt-0.5">أي مهمة دعم بدون SQL مباشر</p>

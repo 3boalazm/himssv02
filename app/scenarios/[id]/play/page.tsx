@@ -10,7 +10,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { Lightbulb } from "lucide-react"
 import {
   EMR_STEPS, PLAYABLE_ID,
@@ -18,9 +18,11 @@ import {
   type PlaySession, type StepAnswer,
 } from "@/lib/scenarios"
 
-export default function PlayPage({ params }: { params: { id: string } }) {
+export default function PlayPage() {
   const router = useRouter()
-  const isPlayable = params.id === PLAYABLE_ID
+  const params = useParams()
+  const id = params.id as string
+  const isPlayable = id === PLAYABLE_ID
 
   const [stepIndex, setStepIndex] = useState(0)
   const [answers, setAnswers] = useState<StepAnswer[]>([])
@@ -32,14 +34,14 @@ export default function PlayPage({ params }: { params: { id: string } }) {
 
   /* Redirect off unsupported ids; resume an existing session for the playable one */
   useEffect(() => {
-    if (!isPlayable) { router.replace(`/scenarios/${params.id}/briefing`); return }
+    if (!isPlayable) { router.replace(`/scenarios/${id}/briefing`); return }
     const s = loadSession(PLAYABLE_ID)
     if (s && !s.completed && s.answers.length > 0) {
       setAnswers(s.answers)
       setStepIndex(s.answers.length)
     }
     setReady(true)
-  }, [isPlayable, params.id, router])
+  }, [isPlayable, id, router])
 
   const step = EMR_STEPS[stepIndex]
 
