@@ -1,38 +1,12 @@
 "use client"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ChevronDown, ChevronLeft } from "lucide-react"
 import Link from "next/link"
+import { PublicNav } from "@/components/public-nav"
 
-function PublicNav() {
-  return (
-    <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
-      <div className="max-w-6xl mx-auto px-4 lg:px-6 h-14 flex items-center justify-between">
-        <Link href="/landing" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-white font-bold text-xs font-mono">H</span>
-          </div>
-          <span className="font-bold text-foreground">HLOS</span>
-        </Link>
-        <nav className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
-          <Link href="/capabilities" className="text-foreground">التصنيف</Link>
-          <Link href="/pricing" className="hover:text-foreground transition-colors">الأسعار</Link>
-        </nav>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <Link href="/dashboard">
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-              ابدأ مجاناً
-            </Button>
-          </Link>
-        </div>
-      </div>
-    </header>
-  )
-}
 
 // Taxonomy: domain → topic → subtopic, with concept counts
 const taxonomy = [

@@ -3,7 +3,6 @@
 import { Bell, UserPlus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { MobileNav } from "./mobile-nav"
 import { useState, type ReactNode } from "react"
 import Link from "next/link"
 
@@ -27,7 +26,6 @@ export function Header({
     <>
       <header className="flex items-center justify-between gap-3 mb-6 animate-slide-in-up">
         <div className="flex items-center gap-3">
-          <MobileNav />
           <div>
             <h1 className="text-xl font-bold text-foreground">{title}</h1>
             <p className="text-xs text-muted-foreground">{description}</p>

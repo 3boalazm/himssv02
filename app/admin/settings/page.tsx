@@ -7,7 +7,7 @@ import { Card }          from "@/components/ui/card"
 import { Button }        from "@/components/ui/button"
 import { Input }         from "@/components/ui/input"
 import { cn }            from "@/lib/utils"
-import { CreditCard, BarChart3, ClipboardList, Tag, Shield, FileText, Settings, LayoutDashboard, Users, Building2 } from "lucide-react"
+import { CreditCard, BarChart3, ClipboardList, Tag, Shield, FileText } from "lucide-react"
 
 const TABS = [
   { id: "payment",   icon: CreditCard,    label: "مزودو الدفع"        },
@@ -16,14 +16,6 @@ const TABS = [
   { id: "taxonomy",  icon: Tag,           label: "إدارة التصنيف"      },
   { id: "limits",    icon: Shield,        label: "حدود الاستخدام"     },
   { id: "policies",  icon: FileText,      label: "سياسات وشروط"      },
-]
-
-const adminMenu = [
-  { icon: LayoutDashboard, label: "لوحة تحكم النظام", href: "/admin" },
-  { icon: Users, label: "إدارة المستخدمين", href: "/admin/users" },
-  { icon: Building2, label: "إدارة المؤسسات", href: "/admin/organizations" },
-  { icon: FileText, label: "إدارة المحتوى", href: "/admin/content" },
-  { icon: Settings, label: "إعدادات المنصة", href: "/admin/settings" },
 ]
 
 function SH({ title }: { title: string }) {
@@ -36,7 +28,7 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="flex min-h-screen bg-background" dir="rtl">
-      <div className="hidden lg:block"><Sidebar variant="admin" menuItems={adminMenu as any} /></div>
+      <Sidebar variant="admin" />
 
       <main className="flex-1 p-6 lg:mr-52 max-w-5xl">
         <div className="inline-flex items-center gap-2 bg-secondary border border-border rounded-full px-3 py-1.5 mb-4">

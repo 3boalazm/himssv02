@@ -29,7 +29,7 @@ export default function OrgSettingsPage() {
 
   return (
     <div className="flex min-h-screen bg-background" dir="rtl">
-      <div className="hidden lg:block"><Sidebar variant="org" /></div>
+      <Sidebar variant="org" />
 
       <main className="flex-1 p-6 lg:mr-56 max-w-5xl">
         {/* Role badge */}

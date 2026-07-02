@@ -1,31 +1,35 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-import { ArrowRight } from "lucide-react"
+/**
+ * Briefing — data-driven from lib/scenarios (BRIEFINGS + SCENARIOS by id).
+ *  · unknown id            → notFound()
+ *  · locked (s.free=false) → CTA becomes "متاح في Pro — ترقية" → /pricing
+ *  · playable + session in progress → CTA "متابعة من الخطوة N"
+ *  · playable + no session          → CTA "بدء السيناريو"
+ * Visual language unchanged (dark gradient + glass-panel-elevated card).
+ */
 
-// Static mock for the briefing — in production this would be fetched by [id]
-const BRIEFING = {
-  id: "emr-outage",
-  title: "انقطاع EMR في قسم الطوارئ",
-  role: "مدير تقنية المعلومات",
-  badge: "سيناريو تجريبي مجاني",
-  timestamp: "الساعة 02:40 · قسم الطوارئ",
-  paragraphs: [
-    "تلقّيت اتصالاً عاجلاً من مشرف قسم الطوارئ يُبلّغك بأن نظام السجل الطبي الإلكتروني (EMR) توقف عن الاستجابة منذ خمس عشرة دقيقة. الطاقم يعمل حالياً على نماذج ورقية يدوية، وثمة ثلاثة حالات حرجة قيد التوثيق في نفس الوقت.",
-    "تُشير لوحة المراقبة إلى أن الخادم الرئيسي لا يستجيب لطلبات ping، في حين أن خادم قاعدة البيانات يُسجّل حمولة CPU بنسبة 98%. لم تكن هناك أي تحديثات أو صيانة مجدولة الليلة.",
-    "مدير المناوبة يسألك: هل نُفعّل بروتوكول الفشل التلقائي (failover) الآن، أم ننتظر تشخيصاً أعمق؟ لديك نافذة قرار محدودة.",
-    "الوقت يمر. كل دقيقة تأخير تعني بيانات مريض إضافية تُوثَّق خارج النظام وستحتاج إلى إدخال يدوي لاحق — مع ما يصاحب ذلك من مخاطر جودة البيانات.",
-  ],
-  objectives: [
-    "تحديد أولوية الاستجابة: هل الأولوية للتشخيص أم للاستمرارية؟",
-    "إدارة التواصل مع قسم الطوارئ والإدارة أثناء الأزمة",
-    "تطبيق بروتوكولات BCP/DR المناسبة لهذا السيناريو",
-    "توثيق الإجراءات لتقرير RCA بعد الأزمة",
-  ],
-}
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { notFound } from "next/navigation"
+import { ArrowRight, Lock } from "lucide-react"
+import { getScenario, BRIEFINGS, PLAYABLE_ID, loadSession, type PlaySession } from "@/lib/scenarios"
 
 export default function BriefingPage({ params }: { params: { id: string } }) {
   const router = useRouter()
+  const scenario = getScenario(params.id)
+  const briefing = BRIEFINGS[params.id]
+  const [session, setSession] = useState<PlaySession | null>(null)
+
+  useEffect(() => {
+    if (params.id === PLAYABLE_ID) setSession(loadSession(PLAYABLE_ID))
+  }, [params.id])
+
+  if (!scenario || !briefing) notFound()
+
+  const isPlayable = scenario.id === PLAYABLE_ID
+  const hasSession = isPlayable && session && !session.completed
+  const resumeStep = hasSession ? session!.answers.length + 1 : 1
 
   return (
     <div
@@ -41,7 +45,7 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "36px 32px 0" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/scenarios")}
             style={{ display: "flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif" }}
           >
             <ArrowRight size={14} />
@@ -52,16 +56,18 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
             className="glass-panel"
             style={{ padding: "8px 16px", fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)" }}
           >
-            دورك: {BRIEFING.role}
-            <span style={{ marginRight: 8, color: "rgba(127,119,221,0.7)", fontSize: 11 }}>· {BRIEFING.badge}</span>
+            دورك: {scenario.role}
+            {isPlayable && briefing.badge && (
+              <span style={{ marginRight: 8, color: "rgba(127,119,221,0.7)", fontSize: 11 }}>· {briefing.badge}</span>
+            )}
           </div>
         </div>
 
         <h1 style={{ fontSize: 26, fontWeight: 700, color: "rgba(255,255,255,0.92)", letterSpacing: "-.4px", lineHeight: 1.3, marginBottom: 8 }}>
-          {BRIEFING.title}
+          {scenario.title}
         </h1>
         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", fontFamily: "'IBM Plex Mono', monospace", marginBottom: 28 }}>
-          {BRIEFING.timestamp}
+          {briefing.timestamp}
         </p>
       </div>
 
@@ -72,7 +78,7 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
           <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 18, fontFamily: "'IBM Plex Mono', monospace" }}>
             الموقف
           </p>
-          {BRIEFING.paragraphs.map((p, i) => (
+          {briefing.paragraphs.map((p, i) => (
             <p key={i} style={{ fontSize: 16, color: "rgba(255,255,255,0.82)", lineHeight: 1.85, marginBottom: 18, fontWeight: 400 }}>
               {p}
             </p>
@@ -83,7 +89,7 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
             <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 14, fontFamily: "'IBM Plex Mono', monospace" }}>
               أهداف التقييم
             </p>
-            {BRIEFING.objectives.map((o, i) => (
+            {briefing.objectives.map((o, i) => (
               <div key={i} style={{ display: "flex", gap: 10, marginBottom: 10 }}>
                 <span style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(15,107,107,0.3)", border: "1px solid rgba(15,107,107,0.5)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#0F6B6B", flexShrink: 0, marginTop: 2, fontFamily: "'IBM Plex Mono',monospace" }}>
                   {i + 1}
@@ -93,15 +99,34 @@ export default function BriefingPage({ params }: { params: { id: string } }) {
             ))}
           </div>
 
-          {/* CTA — solid teal (intentional exception: primary action visible above glass) */}
-          <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 14 }}>
-            <button
-              onClick={() => router.push(`/scenarios/${params.id}/play`)}
-              style={{ height: 46, padding: "0 32px", background: "#0F6B6B", color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif", boxShadow: "0 4px 18px rgba(15,107,107,0.45)", transition: "background 150ms ease" }}
-            >
-              بدء السيناريو
-            </button>
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>30 دقيقة · 5 قرارات</span>
+          {/* CTA */}
+          <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            {isPlayable ? (
+              <>
+                <button
+                  onClick={() => router.push(`/scenarios/${scenario.id}/play`)}
+                  style={{ height: 46, padding: "0 32px", background: "#0F6B6B", color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif", boxShadow: "0 4px 18px rgba(15,107,107,0.45)", transition: "background 150ms ease" }}
+                >
+                  {hasSession ? `متابعة من الخطوة ${resumeStep}` : "بدء السيناريو"}
+                </button>
+                <span style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
+                  {scenario.durationMin} دقيقة · {scenario.steps} قرارات
+                </span>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => router.push("/pricing")}
+                  style={{ height: 46, padding: "0 28px", display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.75)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 11, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Zak', 'IBM Plex Sans Arabic', sans-serif" }}
+                >
+                  <Lock size={14} />
+                  متاح في Pro — ترقية
+                </button>
+                <span style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
+                  {scenario.durationMin} دقيقة · {scenario.difficulty}
+                </span>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ export default function UserSettingsPage() {
 
   return (
     <div className="flex min-h-screen bg-background" dir="rtl">
-      <div className="hidden lg:block"><Sidebar variant="org" /></div>
+      <Sidebar variant="learner" />
 
       <main className="flex-1 p-6 lg:mr-56 max-w-5xl">
         <div className="mb-6">

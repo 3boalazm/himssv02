@@ -4,15 +4,7 @@ import { useState } from "react"
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plus, Upload, FileText, Clock, LayoutDashboard, Users, Settings, Building2 } from "lucide-react"
-
-const adminMenu = [
-  { icon: LayoutDashboard, label: "لوحة تحكم النظام", href: "/admin" },
-  { icon: Users, label: "إدارة المستخدمين", href: "/admin/users" },
-  { icon: Building2, label: "إدارة المؤسسات", href: "/admin/organizations" },
-  { icon: FileText, label: "إدارة المحتوى", href: "/admin/content" },
-  { icon: Settings, label: "إعدادات المنصة", href: "/admin/settings" },
-]
+import { Plus, Upload, FileText, Clock } from "lucide-react"
 
 // Status badges — amber for review, teal for published, neutral for draft. NO red for returned.
 const statusStyle: Record<string, string> = {
@@ -38,7 +30,7 @@ export default function AdminContentPage() {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar variant="admin" menuItems={adminMenu} />
+      <Sidebar variant="admin" />
 
       <main className="flex-1 p-4 lg:p-5 lg:mr-52">
         <div className="flex items-center justify-between mb-5">

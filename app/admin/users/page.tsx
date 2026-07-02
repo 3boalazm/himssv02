@@ -5,15 +5,7 @@ import { Sidebar } from "@/components/dashboard/sidebar"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, MoreHorizontal, LayoutDashboard, Users, FileText, Settings, Building2 } from "lucide-react"
-
-const adminMenu = [
-  { icon: LayoutDashboard, label: "لوحة تحكم النظام", href: "/admin" },
-  { icon: Users, label: "إدارة المستخدمين", href: "/admin/users" },
-  { icon: Building2, label: "إدارة المؤسسات", href: "/admin/organizations" },
-  { icon: FileText, label: "إدارة المحتوى", href: "/admin/content" },
-  { icon: Settings, label: "إعدادات المنصة", href: "/admin/settings" },
-]
+import { Search, MoreHorizontal, Users } from "lucide-react"
 
 const users = [
   { name: "سارة المطيري", email: "sara@kfsh.sa", status: "نشط", level: "ممارس متقدم", plan: "احترافية", signup: "٢٠٢٦/٠١/١٥", lastActive: "اليوم" },
@@ -34,7 +26,7 @@ export default function AdminUsersPage() {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar variant="admin" menuItems={adminMenu} />
+      <Sidebar variant="admin" />
 
       <main className="flex-1 p-4 lg:p-5 lg:mr-52">
         <div className="mb-5">

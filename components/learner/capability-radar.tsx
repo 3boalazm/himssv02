@@ -214,7 +214,7 @@ export function CapabilityRadar({
             <text
               x={l.x}
               y={l.y - 6}
-              textAnchor={l.anchor}
+              textAnchor={l.anchor as "end" | "start" | "middle"}
               dominantBaseline="middle"
               fontSize={11}
               fill={INK}
@@ -226,7 +226,7 @@ export function CapabilityRadar({
             <text
               x={l.x}
               y={l.y + 9}
-              textAnchor={l.anchor}
+              textAnchor={l.anchor as "end" | "start" | "middle"}
               dominantBaseline="middle"
               fontSize={10}
               fill={l.color}

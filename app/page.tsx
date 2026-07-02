@@ -1,9 +1,9 @@
 import { CapabilityRadar, type RadarDomain } from "@/components/learner/capability-radar"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Target, TrendingUp, Award, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { PublicNav } from "@/components/public-nav"
 
 const sampleDomains: RadarDomain[] = [
   { label: "نظم", score: 78 },
@@ -20,34 +20,6 @@ const pillars = [
   { icon: Award, title: "أثبِت", desc: "تقارير احترافية توثّق تقدمك وتصلح للعرض على قيادتك" },
 ]
 
-// Public top nav — the landing has no app sidebar
-function PublicNav() {
-  return (
-    <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
-      <div className="max-w-6xl mx-auto px-4 lg:px-6 h-14 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-white font-bold text-xs font-mono">H</span>
-          </div>
-          <span className="font-bold text-foreground">HLOS</span>
-        </div>
-        <nav className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
-          <Link href="/capabilities" className="hover:text-foreground transition-colors">التصنيف</Link>
-          <Link href="#methodology" className="hover:text-foreground transition-colors">المنهجية</Link>
-          <Link href="/pricing" className="hover:text-foreground transition-colors">الأسعار</Link>
-        </nav>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <Link href="/dashboard">
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-              ابدأ مجاناً
-            </Button>
-          </Link>
-        </div>
-      </div>
-    </header>
-  )
-}
 
 export default function LandingPage() {
   return (
