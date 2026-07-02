@@ -59,7 +59,7 @@ export default function ContactPage() {
           {/* Form */}
           <Card className="p-6 lg:col-span-2">
             {sent ? (
-              <div className="flex flex-col items-center justify-center text-center py-12">
+              <div className="flex flex-col items-center justify-center text-center py-12" role="status" aria-live="polite">
                 <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                   <CheckCircle2 className="w-7 h-7 text-primary" />
                 </div>

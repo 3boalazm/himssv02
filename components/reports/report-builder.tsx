@@ -1,8 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { useModalA11y } from "@/hooks/use-modal-a11y"
+import { modalBackdropVariants, modalPanelVariants, modalTransition, reducedTransition } from "@/lib/motion"
 import {
   Table as TableIcon, BarChart3, LineChart as LineIcon, Radar as RadarIcon,
   ChevronUp, ChevronDown, X, Plus, Eye, Trash2,
@@ -199,26 +202,75 @@ export function ReportBuilder() {
       </div>
 
       {/* Preview modal */}
-      {preview && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setPreview(false)}>
-          <Card className="max-w-lg w-full p-0 overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <div className="p-5 border-b border-border flex items-center justify-between">
-              <h2 className="text-lg font-bold text-foreground">معاينة الإعداد</h2>
-              <button onClick={() => setPreview(false)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
-            </div>
-            <div className="p-5 space-y-3 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">الاسم</span><span className="text-foreground font-medium">{name || "— بدون اسم —"}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">المؤشرات المختارة</span><span className="text-foreground font-medium">{metrics.filter((m) => m.selected).length}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">الفلاتر</span><span className="text-foreground font-medium">{filters.length}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">طريقة العرض</span><span className="text-foreground font-medium">{VIS.find((x) => x.v === vis)?.label}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">التخطيط</span><span className="text-foreground font-medium">{layout === "single" ? "عمود واحد" : layout === "two" ? "عمودان" : "ثلاثة أعمدة"}</span></div>
-              <div className="mt-4 p-4 rounded-lg bg-secondary/40 text-center text-muted-foreground text-xs leading-relaxed">
-                سيُولَّد التقرير بالمؤشرات والفلاتر المختارة عند ربط خدمة التوليد.
-              </div>
-            </div>
-          </Card>
-        </div>
-      )}
+      <AnimatePresence>
+        {preview && (
+          <PreviewModal
+            name={name}
+            metricsSelected={metrics.filter((m) => m.selected).length}
+            filtersCount={filters.length}
+            visLabel={VIS.find((x) => x.v === vis)?.label ?? ""}
+            layout={layout}
+            onClose={() => setPreview(false)}
+          />
+        )}
+      </AnimatePresence>
     </Card>
+  )
+}
+
+function PreviewModal({
+  name, metricsSelected, filtersCount, visLabel, layout, onClose,
+}: {
+  name: string
+  metricsSelected: number
+  filtersCount: number
+  visLabel: string
+  layout: string
+  onClose: () => void
+}) {
+  const modalRef = useModalA11y(onClose)
+  const prefersReduced = useReducedMotion()
+  const transition = prefersReduced ? reducedTransition : modalTransition
+  return (
+    <motion.div
+      variants={modalBackdropVariants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      transition={transition}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        variants={modalPanelVariants}
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        transition={transition}
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="preview-modal-title"
+        className="max-w-lg w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Card className="p-0 overflow-hidden">
+          <div className="p-5 border-b border-border flex items-center justify-between">
+            <h2 id="preview-modal-title" className="text-lg font-bold text-foreground">معاينة الإعداد</h2>
+            <button onClick={onClose} aria-label="إغلاق" className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
+          </div>
+          <div className="p-5 space-y-3 text-sm">
+            <div className="flex justify-between"><span className="text-muted-foreground">الاسم</span><span className="text-foreground font-medium">{name || "— بدون اسم —"}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">المؤشرات المختارة</span><span className="text-foreground font-medium">{metricsSelected}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">الفلاتر</span><span className="text-foreground font-medium">{filtersCount}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">طريقة العرض</span><span className="text-foreground font-medium">{visLabel}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">التخطيط</span><span className="text-foreground font-medium">{layout === "single" ? "عمود واحد" : layout === "two" ? "عمودان" : "ثلاثة أعمدة"}</span></div>
+            <div className="mt-4 p-4 rounded-lg bg-secondary/40 text-center text-muted-foreground text-xs leading-relaxed">
+              سيُولَّد التقرير بالمؤشرات والفلاتر المختارة عند ربط خدمة التوليد.
+            </div>
+          </div>
+        </Card>
+      </motion.div>
+    </motion.div>
   )
 }

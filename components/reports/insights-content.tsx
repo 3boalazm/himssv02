@@ -1,9 +1,12 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CapabilityRadar, type RadarDomain } from "@/components/learner/capability-radar"
+import { useModalA11y } from "@/hooks/use-modal-a11y"
+import { modalBackdropVariants, modalPanelVariants, modalTransition, reducedTransition } from "@/lib/motion"
 import {
   TrendingUp, Target, Users, Clock, Award, Search, Download,
   ChevronDown, X, FileText, Table as TableIcon, Mail, CheckCircle2,
@@ -119,6 +122,54 @@ function LineChart({ set }: { set: { labels: string[]; completion: number[]; sco
   )
 }
 
+function DeptDrilldown({ dept }: { dept: Dept }) {
+  const prefersReduced = useReducedMotion()
+  const transition = prefersReduced ? reducedTransition : { duration: 0.2, ease: "easeOut" as const }
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={transition}
+      className="overflow-hidden"
+    >
+      <div className="mt-3 p-4 rounded-lg bg-secondary/40 grid grid-cols-3 gap-3">
+        <div><p className="text-[10px] text-muted-foreground">المستخدمون</p><p className="text-lg font-bold font-mono text-foreground">{dept.users}</p></div>
+        <div><p className="text-[10px] text-muted-foreground">الأعلى أداءً</p><p className="text-xs font-semibold text-foreground mt-1">{dept.top}</p></div>
+        <div><p className="text-[10px] text-muted-foreground">يحتاجون دعماً</p><p className="text-lg font-bold font-mono" style={{ color: AMBER }}>{dept.needsSupport}</p></div>
+      </div>
+    </motion.div>
+  )
+}
+
+// Isolated so its 4s tick only re-renders this small strip, not the whole
+// dashboard (LineChart SVG, radar, results table stay untouched).
+function LiveSnapshotStrip() {
+  const [tick, setTick] = useState(0)
+
+  useEffect(() => {
+    const t = setInterval(() => setTick((n) => n + 1), 4000)
+    return () => clearInterval(t)
+  }, [])
+
+  const liveUsers = 105 + (tick % 6)
+
+  return (
+    <Card className="p-4 flex items-center justify-between gap-4 flex-wrap">
+      <div className="flex items-center gap-2">
+        <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: GREEN }} />
+        <span className="text-sm font-medium text-foreground">لقطة مباشرة</span>
+        <span className="text-xs text-muted-foreground">· تُحدَّث الآن</span>
+      </div>
+      <div className="flex items-center gap-6 text-sm">
+        <span className="text-muted-foreground">نشطون الآن: <strong className="text-foreground font-mono">{liveUsers}</strong></span>
+        <span className="text-muted-foreground">جلسات تقييم جارية: <strong className="text-foreground font-mono">{8 + (tick % 3)}</strong></span>
+        <span className="text-muted-foreground hidden sm:inline">٣ مناطق</span>
+      </div>
+    </Card>
+  )
+}
+
 export function InsightsContent() {
   const [period, setPeriod] = useState<keyof typeof trendSets>("يومي")
   const [openDept, setOpenDept] = useState<string | null>(null)
@@ -126,15 +177,6 @@ export function InsightsContent() {
   const [sortBy, setSortBy] = useState<"score" | "name">("score")
   const [statusFilter, setStatusFilter] = useState<"all" | Status>("all")
   const [showExport, setShowExport] = useState(false)
-  const [tick, setTick] = useState(0)
-
-  // live-snapshot tick (visual only — no backend/websocket)
-  useEffect(() => {
-    const t = setInterval(() => setTick((n) => n + 1), 4000)
-    return () => clearInterval(t)
-  }, [])
-
-  const liveUsers = 105 + (tick % 6)
 
   const filteredRows = useMemo(() => {
     return rows
@@ -150,19 +192,9 @@ export function InsightsContent() {
 
   return (
     <div className="space-y-6">
-      {/* Live snapshot strip */}
-      <Card className="p-4 flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: GREEN }} />
-          <span className="text-sm font-medium text-foreground">لقطة مباشرة</span>
-          <span className="text-xs text-muted-foreground">· تُحدَّث الآن</span>
-        </div>
-        <div className="flex items-center gap-6 text-sm">
-          <span className="text-muted-foreground">نشطون الآن: <strong className="text-foreground font-mono">{liveUsers}</strong></span>
-          <span className="text-muted-foreground">جلسات تقييم جارية: <strong className="text-foreground font-mono">{8 + (tick % 3)}</strong></span>
-          <span className="text-muted-foreground hidden sm:inline">٣ مناطق</span>
-        </div>
-      </Card>
+      {/* Live snapshot strip — isolated in its own component so its 4s tick
+          doesn't re-render the whole dashboard (charts, table, radar) */}
+      <LiveSnapshotStrip />
 
       {/* KPI metric cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
@@ -233,13 +265,9 @@ export function InsightsContent() {
                   </div>
                   <p className="text-[10px] text-muted-foreground mt-1">الحالي مقابل الشهر السابق ({d.last}%)</p>
                 </button>
-                {openDept === d.name && (
-                  <div className="mt-3 p-4 rounded-lg bg-secondary/40 grid grid-cols-3 gap-3 animate-slide-in-up">
-                    <div><p className="text-[10px] text-muted-foreground">المستخدمون</p><p className="text-lg font-bold font-mono text-foreground">{d.users}</p></div>
-                    <div><p className="text-[10px] text-muted-foreground">الأعلى أداءً</p><p className="text-xs font-semibold text-foreground mt-1">{d.top}</p></div>
-                    <div><p className="text-[10px] text-muted-foreground">يحتاجون دعماً</p><p className="text-lg font-bold font-mono" style={{ color: AMBER }}>{d.needsSupport}</p></div>
-                  </div>
-                )}
+                <AnimatePresence initial={false}>
+                  {openDept === d.name && <DeptDrilldown dept={d} />}
+                </AnimatePresence>
               </div>
             ))}
           </div>
@@ -316,7 +344,9 @@ export function InsightsContent() {
       </Card>
 
       {/* Export dialog (UI-only) */}
-      {showExport && <ExportDialog onClose={() => setShowExport(false)} />}
+      <AnimatePresence>
+        {showExport && <ExportDialog onClose={() => setShowExport(false)} />}
+      </AnimatePresence>
     </div>
   )
 }
@@ -325,6 +355,9 @@ function ExportDialog({ onClose }: { onClose: () => void }) {
   const [format, setFormat] = useState("pdf")
   const [fileName, setFileName] = useState("HLOS_Report_2026-07")
   const [done, setDone] = useState(false)
+  const modalRef = useModalA11y(onClose)
+  const prefersReduced = useReducedMotion()
+  const transition = prefersReduced ? reducedTransition : modalTransition
   const formats = [
     { v: "pdf", icon: FileText, label: "PDF" },
     { v: "excel", icon: TableIcon, label: "Excel" },
@@ -332,14 +365,35 @@ function ExportDialog({ onClose }: { onClose: () => void }) {
     { v: "email", icon: Mail, label: "بريد" },
   ]
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <Card className="max-w-lg w-full p-0 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+    <motion.div
+      variants={modalBackdropVariants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      transition={transition}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        variants={modalPanelVariants}
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        transition={transition}
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="export-dialog-title"
+        className="max-w-lg w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+      <Card className="p-0 overflow-hidden">
         <div className="p-5 border-b border-border flex items-center justify-between">
-          <h2 className="text-lg font-bold text-foreground">تصدير التقرير</h2>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
+          <h2 id="export-dialog-title" className="text-lg font-bold text-foreground">تصدير التقرير</h2>
+          <button onClick={onClose} aria-label="إغلاق" className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
         </div>
         {done ? (
-          <div className="p-10 text-center">
+          <div className="p-10 text-center" role="status" aria-live="polite">
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4"><CheckCircle2 className="w-7 h-7 text-primary" /></div>
             <p className="text-base font-bold text-foreground mb-1">تم تجهيز الملف</p>
             <p className="text-sm text-muted-foreground mb-6">{fileName}.{format === "excel" ? "xlsx" : format} — جاهز للتنزيل عند ربط الخدمة.</p>
@@ -379,6 +433,7 @@ function ExportDialog({ onClose }: { onClose: () => void }) {
           </div>
         )}
       </Card>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }

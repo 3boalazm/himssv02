@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, Bell,
   Target, Grid3x3, Dumbbell, Route, BookOpen, FileText, Waypoints,
-  Building2, TrendingUp, type LucideIcon,
+  Building2, TrendingUp, Receipt, type LucideIcon,
 } from "lucide-react"
 
 /**
@@ -58,6 +58,7 @@ export const adminMenu: NavItem[] = [
   { icon: Users,           label: "إدارة المستخدمين",  href: "/admin/users"         },
   { icon: Building2,       label: "إدارة المؤسسات",    href: "/admin/organizations" },
   { icon: FileText,        label: "إدارة المحتوى",     href: "/admin/content"       },
+  { icon: Receipt,         label: "الفوترة",           href: "/admin/billing"       },
   { icon: Settings,        label: "إعدادات المنصة",    href: "/admin/settings"      },
 ]
 

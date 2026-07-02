@@ -73,6 +73,7 @@ const groups: RouteGroup[] = [
       { label: "لوحة تحكم النظام", href: "/admin" },
       { label: "إدارة المستخدمين", href: "/admin/users" },
       { label: "إدارة المحتوى", href: "/admin/content" },
+      { label: "الفوترة والاشتراكات", href: "/admin/billing" },
       { label: "إعدادات المنصة", href: "/admin/settings" },
     ],
   },

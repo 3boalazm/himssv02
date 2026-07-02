@@ -225,7 +225,7 @@ export default function TryPage() {
 
         {/* Rationale after reveal */}
         {revealed && (
-          <Card className="p-5 mb-5 bg-secondary/40">
+          <Card className="p-5 mb-5 bg-secondary/40" role="status" aria-live="polite">
             <p className="text-xs font-bold text-primary mb-2">
               {selected === q.correct ? "إجابة صحيحة ✓" : "الإجابة الأمثل"}
             </p>

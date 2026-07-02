@@ -493,7 +493,9 @@ button:not(:disabled):active {
 
 /* Respect reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
-  .animate-in-up, .animate-bar, [data-slot="card"] {
+  .animate-in-up, .animate-bar, [data-slot="card"],
+  .animate-pulse, .animate-pulse-glow, .animate-slide-in-up,
+  .animate-fade-in, .animate-float {
     animation: none !important;
     transition: none !important;
   }
