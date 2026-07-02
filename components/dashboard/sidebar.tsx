@@ -1,6 +1,6 @@
 "use client"
 
-import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon, Target, Grid3x3, Dumbbell, Route, BookOpen, FileText, Bell } from "lucide-react"
+import { LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, LucideIcon, Target, Grid3x3, Dumbbell, Route, BookOpen, FileText, Bell, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import Link from "next/link"
@@ -115,6 +115,14 @@ export function Sidebar({ variant = "org", menuItems }: SidebarProps) {
             {isAdmin ? "لوحة الإدارة" : isLearner ? "ممارس متقدم" : "org_admin · 36 / 50 seat"}
           </p>
         </div>
+        <button
+          onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
+          className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors flex-shrink-0"
+          aria-label="بحث"
+          title="بحث (Ctrl+K)"
+        >
+          <Search className="w-4 h-4" />
+        </button>
         <ThemeToggle className="flex-shrink-0" />
       </div>
 

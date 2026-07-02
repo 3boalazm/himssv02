@@ -35,7 +35,12 @@ export function Header({
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-secondary">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 hover:bg-secondary"
+            onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
+          >
             <Search className="w-4 h-4" />
           </Button>
           <Link href="/notifications">

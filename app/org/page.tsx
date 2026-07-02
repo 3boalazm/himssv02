@@ -23,6 +23,14 @@ const teamDomains = [
   { label: "القيادة الرقمية", score: 69 },
 ]
 
+// Organizational departments — distinct from learning domains above
+const departments = [
+  { name: "تقنية المعلومات", count: 12, score: 81 },
+  { name: "التمريض", count: 14, score: 62 },
+  { name: "الإدارة", count: 6, score: 58 },
+  { name: "المختبرات والتشخيص", count: 4, score: 70 },
+]
+
 function masteryColor(score: number): string {
   if (score >= 70) return "#22C55E"
   if (score >= 40) return "#14B8A6"
@@ -57,15 +65,42 @@ export default function OrgDashboardPage() {
           </Button>
         </div>
 
-        {/* Alert bar */}
-        <Card className="p-3 mb-5 animate-in-up bg-[#B45309]/5 border-[#B45309]/20 flex items-center justify-between">
-          <span className="flex items-center gap-2 text-sm text-[#B45309]">
-            <AlertTriangle className="w-4 h-4" />
-            ٨ أعضاء لم يبدأوا التقييم بعد
-          </span>
-          <Button size="sm" variant="outline" className="text-xs border-[#B45309]/30 text-[#B45309]">
-            إرسال تذكير
-          </Button>
+        {/* Requires Attention — multi-type alerts with quick actions */}
+        <Card className="p-5 mb-5 animate-in-up">
+          <h3 className="text-sm font-semibold text-foreground mb-3">يتطلب انتباهك</h3>
+          <div className="space-y-2">
+            <div className="activity-item flex items-center justify-between" style={{ "--accent-color": "#3B82F6" } as React.CSSProperties}>
+              <span className="flex items-center gap-2 text-sm text-foreground">
+                <AlertTriangle className="w-4 h-4 text-[#3B82F6] flex-shrink-0" />
+                ٨ أعضاء لم يبدأوا التقييم بعد
+              </span>
+              <Button size="sm" variant="outline" className="text-xs flex-shrink-0">
+                إرسال تذكير
+              </Button>
+            </div>
+            <div className="activity-item flex items-center justify-between" style={{ "--accent-color": "#14B8A6" } as React.CSSProperties}>
+              <span className="flex items-center gap-2 text-sm text-foreground">
+                <AlertTriangle className="w-4 h-4 text-[#14B8A6] flex-shrink-0" />
+                ٥ أعضاء بدرجة أقل من 50% في التوافقية والمعايير
+              </span>
+              <Link href="/paths">
+                <Button size="sm" variant="outline" className="text-xs flex-shrink-0">
+                  خطة تدريب
+                </Button>
+              </Link>
+            </div>
+            <div className="activity-item flex items-center justify-between" style={{ "--accent-color": "#22C55E" } as React.CSSProperties}>
+              <span className="flex items-center gap-2 text-sm text-foreground">
+                <AlertTriangle className="w-4 h-4 text-[#22C55E] flex-shrink-0" />
+                تجديد العقد خلال ٤٥ يوماً
+              </span>
+              <Link href="/org/settings">
+                <Button size="sm" variant="outline" className="text-xs flex-shrink-0">
+                  مراجعة الخطة
+                </Button>
+              </Link>
+            </div>
+          </div>
         </Card>
 
         {/* Stat tiles */}
@@ -73,7 +108,7 @@ export default function OrgDashboardPage() {
           <Card className="p-4">
             <p className="text-[11px] text-muted-foreground mb-1">دروس مكتملة</p>
             <div className="text-2xl font-bold text-foreground font-mono">148</div>
-            <p className="text-[10px] text-[#B45309] mt-1">↓ ١٢ عن الشهر الماضي</p>
+            <p className="text-[10px] text-[#3B82F6] mt-1">↓ ١٢ عن الشهر الماضي</p>
           </Card>
           <Card className="p-4">
             <p className="text-[11px] text-muted-foreground mb-1">متوسط درجة الفريق</p>
@@ -95,6 +130,29 @@ export default function OrgDashboardPage() {
             <p className="text-[10px] opacity-90 mt-1">من {seatsTotal} مقعداً · {seatsPct}% مستخدم</p>
           </Card>
         </div>
+
+        {/* Department breakdown — separate from domain performance */}
+        <Card className="p-5 mb-5">
+          <h3 className="text-sm font-semibold text-foreground mb-1">الأداء حسب القسم</h3>
+          <p className="text-xs text-muted-foreground mb-4">متوسط درجات الجاهزية لكل قسم تنظيمي</p>
+          <div className="space-y-3">
+            {departments.map((d) => (
+              <div key={d.name}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-foreground">
+                    {d.name} <span className="text-muted-foreground">· {d.count} أعضاء</span>
+                  </span>
+                  <span className="text-xs font-mono font-bold" style={{ color: masteryColor(d.score) }}>
+                    {d.score}%
+                  </span>
+                </div>
+                <div className="progress-track h-2.5">
+                  <div className="progress-fill-gradient animate-pulse-glow" style={{ width: `${d.score}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
           {/* Quick actions */}
