@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { Target, TrendingUp, Award, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { PublicNav } from "@/components/public-nav"
+import { SiteFooter } from "@/components/site-footer"
 
 const sampleDomains: RadarDomain[] = [
   { label: "نظم", score: 78 },
@@ -43,7 +44,7 @@ export default function LandingPage() {
                   ابدأ التقييم المجاني
                 </Button>
               </Link>
-              <Link href="/assess">
+              <Link href="/try">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto">
                   جرّب ٣ أسئلة بلا تسجيل
                 </Button>
@@ -124,16 +125,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span>© ٢٠٢٦ HLOS</span>
-          <div className="flex items-center gap-6">
-            <Link href="#" className="hover:text-foreground transition-colors">الخصوصية</Link>
-            <Link href="#" className="hover:text-foreground transition-colors">الشروط والأحكام</Link>
-            <Link href="#" className="hover:text-foreground transition-colors">تواصل معنا</Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

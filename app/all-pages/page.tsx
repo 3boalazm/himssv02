@@ -60,6 +60,8 @@ const groups: RouteGroup[] = [
       { label: "لوحة تحكم المؤسسة", href: "/org" },
       { label: "أعضاء الفريق", href: "/team" },
       { label: "التقارير المجمّعة", href: "/analytics" },
+      { label: "لوحة التقارير التحليلية", href: "/reports/insights" },
+      { label: "منشئ التقارير", href: "/reports/builder" },
       { label: "إعدادات المؤسسة", href: "/org/settings" },
     ],
   },

@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, Users, BarChart3, Settings, Mail, LogOut, Bell,
   Target, Grid3x3, Dumbbell, Route, BookOpen, FileText, Waypoints,
-  Building2, type LucideIcon,
+  Building2, TrendingUp, type LucideIcon,
 } from "lucide-react"
 
 /**
@@ -40,9 +40,10 @@ export const learnerGeneralItems: NavItem[] = [
 
 /* ─── Org admin ───────────────────────────────────────────────────────── */
 export const orgMenu: NavItem[] = [
-  { icon: LayoutDashboard, label: "لوحة التحكم",  href: "/org"       },
-  { icon: Users,           label: "أعضاء الفريق", href: "/team"      },
-  { icon: BarChart3,       label: "التقارير",      href: "/analytics" },
+  { icon: LayoutDashboard, label: "لوحة التحكم",  href: "/org"              },
+  { icon: Users,           label: "أعضاء الفريق", href: "/team"             },
+  { icon: BarChart3,       label: "التقارير",      href: "/analytics"        },
+  { icon: TrendingUp,      label: "التحليلات",     href: "/reports/insights" },
 ]
 
 export const orgGeneralItems: NavItem[] = [
